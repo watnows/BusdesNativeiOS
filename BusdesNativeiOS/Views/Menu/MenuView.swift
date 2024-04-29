@@ -1,15 +1,25 @@
-//
-//  MenuView.swift
-//  BusdesNativeiOS
-//
-//  Created by 黒川龍之介 on 2024/04/29.
-//
-
 import SwiftUI
 
 struct MenuView: View {
+    @State private var path = [MenuItems]()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List {
+                Section {
+                    Text("フィードバックを送信")
+                    Text("利用規約")
+                    Text("最新情報【X】")
+                } header: {
+                    Text("設定")
+                }
+                Section {
+                    Text("運行スケジュール")
+                    Text("時刻表")
+                } header: {
+                    Text("大学間シャトルバス")
+                }
+            }
+        }
     }
 }
 

@@ -1,19 +1,14 @@
-//
-//  ViewController.swift
-//  BusdesNativeiOS
-//
-//  Created by 黒川龍之介 on 2024/04/27.
-//
-
 import UIKit
+import SwiftUI
 
 class ViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        let contentView = MenuView()
+        let hostingVC = UIHostingController(rootView: contentView)
+        addChild(hostingVC)
+        view.addSubview(hostingVC.view)
+        hostingVC.didMove(toParent: self)
+        hostingVC.coverView(parent: view)
     }
-
-
 }
-

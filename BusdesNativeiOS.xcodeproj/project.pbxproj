@@ -16,6 +16,7 @@
 		BFB2F8DC2BDD2B2800E9549B /* BusdesNativeiOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F8DB2BDD2B2800E9549B /* BusdesNativeiOSTests.swift */; };
 		BFB2F8E62BDD2B2800E9549B /* BusdesNativeiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F8E52BDD2B2800E9549B /* BusdesNativeiOSUITests.swift */; };
 		BFB2F8E82BDD2B2800E9549B /* BusdesNativeiOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F8E72BDD2B2800E9549B /* BusdesNativeiOSUITestsLaunchTests.swift */; };
+		BFB2F8F52BDF779700E9549B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F8F42BDF779700E9549B /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		BFB2F8E12BDD2B2800E9549B /* BusdesNativeiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BusdesNativeiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFB2F8E52BDD2B2800E9549B /* BusdesNativeiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusdesNativeiOSUITests.swift; sourceTree = "<group>"; };
 		BFB2F8E72BDD2B2800E9549B /* BusdesNativeiOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusdesNativeiOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		BFB2F8F42BDF779700E9549B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				BFB2F8CD2BDD2B2700E9549B /* Assets.xcassets */,
 				BFB2F8CF2BDD2B2700E9549B /* LaunchScreen.storyboard */,
 				BFB2F8D22BDD2B2700E9549B /* Info.plist */,
+				BFB2F8F42BDF779700E9549B /* HomeView.swift */,
 			);
 			path = BusdesNativeiOS;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFB2F8C92BDD2B2500E9549B /* ViewController.swift in Sources */,
+				BFB2F8F52BDF779700E9549B /* HomeView.swift in Sources */,
 				BFB2F8C52BDD2B2500E9549B /* AppDelegate.swift in Sources */,
 				BFB2F8C72BDD2B2500E9549B /* SceneDelegate.swift in Sources */,
 			);

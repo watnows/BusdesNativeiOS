@@ -1,20 +1,30 @@
 import SwiftUI
 
 struct MenuView: View {
-    @State private var path = [MenuItems]()
     var body: some View {
-        NavigationStack {
+        NavigationStack() {
             List {
                 Section {
-                    Text("フィードバックを送信")
-                    Text("利用規約")
-                    Text("最新情報【X】")
+                    NavigationLink(destination: WebView(pageURL: "https://forms.gle/wpq6MYUeWfisKDKQA")){
+                        Text("フィードバックを送信")
+                    }
+                    NavigationLink(destination: WebView(pageURL: "https://ryota2425.github.io/")){
+                        Text("利用規約")
+                        
+                    }
+                    NavigationLink(destination: WebView(pageURL: "https://twitter.com/busdes_rits")){
+                        Text("最新情報【X】")
+                    }
                 } header: {
                     Text("設定")
                 }
                 Section {
-                    Text("運行スケジュール")
-                    Text("時刻表")
+                    NavigationLink(destination: WebView(pageURL: "https://mercy34mercy.github.io/bustimer_kic/shuttle/schedule.jpg")){
+                        Text("運行スケジュール")
+                    }
+                    NavigationLink(destination: WebView(pageURL: "https://mercy34mercy.github.io/bustimer_kic/shuttle/timetable.jpg")){
+                        Text("時刻表")
+                    }
                 } header: {
                     Text("大学間シャトルバス")
                 }

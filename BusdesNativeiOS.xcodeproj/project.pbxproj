@@ -17,6 +17,14 @@
 		BFB2F8E62BDD2B2800E9549B /* BusdesNativeiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F8E52BDD2B2800E9549B /* BusdesNativeiOSUITests.swift */; };
 		BFB2F8E82BDD2B2800E9549B /* BusdesNativeiOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F8E72BDD2B2800E9549B /* BusdesNativeiOSUITestsLaunchTests.swift */; };
 		BFB2F8F52BDF779700E9549B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F8F42BDF779700E9549B /* HomeView.swift */; };
+		BFB2F8FA2BDF8B9200E9549B /* SourceHanSansHW-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFB2F8F72BDF8B9200E9549B /* SourceHanSansHW-Regular.otf */; };
+		BFB2F8FB2BDF8B9200E9549B /* SourceHanSansHW-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFB2F8F82BDF8B9200E9549B /* SourceHanSansHW-Bold.otf */; };
+		BFB2F8FC2BDF8B9200E9549B /* Niveau Grotesk Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFB2F8F92BDF8B9200E9549B /* Niveau Grotesk Medium.otf */; };
+		BFB2F8FF2BDF8CC800E9549B /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F8FE2BDF8CC800E9549B /* MenuView.swift */; };
+		BFB2F9052BDF93B400E9549B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F9042BDF93B400E9549B /* WebView.swift */; };
+		BFB2F9082BDF93E900E9549B /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F9072BDF93E900E9549B /* WebViewModel.swift */; };
+		BFB2F90A2BDF995100E9549B /* UIHostingController+coverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F9092BDF995100E9549B /* UIHostingController+coverView.swift */; };
+		BFB2F90C2BDFA13400E9549B /* WebViewModel+Cordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2F90B2BDFA13400E9549B /* WebViewModel+Cordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +59,14 @@
 		BFB2F8E52BDD2B2800E9549B /* BusdesNativeiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusdesNativeiOSUITests.swift; sourceTree = "<group>"; };
 		BFB2F8E72BDD2B2800E9549B /* BusdesNativeiOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusdesNativeiOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		BFB2F8F42BDF779700E9549B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		BFB2F8F72BDF8B9200E9549B /* SourceHanSansHW-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceHanSansHW-Regular.otf"; sourceTree = "<group>"; };
+		BFB2F8F82BDF8B9200E9549B /* SourceHanSansHW-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceHanSansHW-Bold.otf"; sourceTree = "<group>"; };
+		BFB2F8F92BDF8B9200E9549B /* Niveau Grotesk Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Niveau Grotesk Medium.otf"; sourceTree = "<group>"; };
+		BFB2F8FE2BDF8CC800E9549B /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		BFB2F9042BDF93B400E9549B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		BFB2F9072BDF93E900E9549B /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
+		BFB2F9092BDF995100E9549B /* UIHostingController+coverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHostingController+coverView.swift"; sourceTree = "<group>"; };
+		BFB2F90B2BDFA13400E9549B /* WebViewModel+Cordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewModel+Cordinator.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +117,8 @@
 		BFB2F8C32BDD2B2500E9549B /* BusdesNativeiOS */ = {
 			isa = PBXGroup;
 			children = (
+				BFB2F8FD2BDF8CA800E9549B /* Views */,
+				BFB2F8F62BDF8B2D00E9549B /* Fonts */,
 				BFB2F8C42BDD2B2500E9549B /* AppDelegate.swift */,
 				BFB2F8C62BDD2B2500E9549B /* SceneDelegate.swift */,
 				BFB2F8C82BDD2B2500E9549B /* ViewController.swift */,
@@ -108,7 +126,7 @@
 				BFB2F8CD2BDD2B2700E9549B /* Assets.xcassets */,
 				BFB2F8CF2BDD2B2700E9549B /* LaunchScreen.storyboard */,
 				BFB2F8D22BDD2B2700E9549B /* Info.plist */,
-				BFB2F8F42BDF779700E9549B /* HomeView.swift */,
+				BFB2F9092BDF995100E9549B /* UIHostingController+coverView.swift */,
 			);
 			path = BusdesNativeiOS;
 			sourceTree = "<group>";
@@ -128,6 +146,52 @@
 				BFB2F8E72BDD2B2800E9549B /* BusdesNativeiOSUITestsLaunchTests.swift */,
 			);
 			path = BusdesNativeiOSUITests;
+			sourceTree = "<group>";
+		};
+		BFB2F8F62BDF8B2D00E9549B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				BFB2F8F92BDF8B9200E9549B /* Niveau Grotesk Medium.otf */,
+				BFB2F8F82BDF8B9200E9549B /* SourceHanSansHW-Bold.otf */,
+				BFB2F8F72BDF8B9200E9549B /* SourceHanSansHW-Regular.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		BFB2F8FD2BDF8CA800E9549B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BFB2F9012BDF8D8000E9549B /* Menu */,
+				BFB2F9002BDF8D7500E9549B /* Home */,
+				BFB2F9062BDF93BD00E9549B /* Web */,
+				BFB2F90B2BDFA13400E9549B /* WebViewModel+Cordinator.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BFB2F9002BDF8D7500E9549B /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				BFB2F8F42BDF779700E9549B /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		BFB2F9012BDF8D8000E9549B /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				BFB2F8FE2BDF8CC800E9549B /* MenuView.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		BFB2F9062BDF93BD00E9549B /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				BFB2F9042BDF93B400E9549B /* WebView.swift */,
+				BFB2F9072BDF93E900E9549B /* WebViewModel.swift */,
+			);
+			path = Web;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,8 +299,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFB2F8CE2BDD2B2700E9549B /* Assets.xcassets in Resources */,
+				BFB2F8FA2BDF8B9200E9549B /* SourceHanSansHW-Regular.otf in Resources */,
+				BFB2F8FC2BDF8B9200E9549B /* Niveau Grotesk Medium.otf in Resources */,
 				BFB2F8D12BDD2B2700E9549B /* Base in Resources */,
 				BFB2F8CC2BDD2B2500E9549B /* Base in Resources */,
+				BFB2F8FB2BDF8B9200E9549B /* SourceHanSansHW-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,10 +328,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFB2F8FF2BDF8CC800E9549B /* MenuView.swift in Sources */,
+				BFB2F90A2BDF995100E9549B /* UIHostingController+coverView.swift in Sources */,
 				BFB2F8C92BDD2B2500E9549B /* ViewController.swift in Sources */,
+				BFB2F9082BDF93E900E9549B /* WebViewModel.swift in Sources */,
 				BFB2F8F52BDF779700E9549B /* HomeView.swift in Sources */,
 				BFB2F8C52BDD2B2500E9549B /* AppDelegate.swift in Sources */,
 				BFB2F8C72BDD2B2500E9549B /* SceneDelegate.swift in Sources */,
+				BFB2F90C2BDFA13400E9549B /* WebViewModel+Cordinator.swift in Sources */,
+				BFB2F9052BDF93B400E9549B /* WebView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

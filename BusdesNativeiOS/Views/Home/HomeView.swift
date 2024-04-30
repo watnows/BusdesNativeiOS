@@ -12,7 +12,7 @@ struct HomeView: View {
             TabView(
                 selection: $selection,
                 content: {
-                    Text("Tab Content 1")
+                        NavigationLink("aaa",destination: AddLineView())
                         .tabItem {
                             Text("Next bus")
                         }.tag(1)

@@ -1,15 +1,24 @@
 import SwiftUI
 
-struct RoundedButton: ButtonStyle {
+struct RoundedRedButton: ButtonStyle {
     let isSelected: Bool
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .frame(width: 130, height: 40)
-            .foregroundColor(.white)
-            // 有効無効でカラーを変更
+            .foregroundColor(isSelected ? .white : .black)
             .background(isSelected ? Color.appRed : Color.appGray)
-            // 押下時かどうかで透明度を変更
+            .opacity(configuration.isPressed ? 0.5 : 1.0)
+            .clipShape(Capsule())
+    }
+}
+
+struct RoundedGrayButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(width: 130, height: 40)
+            .foregroundColor(.black)
+            .background(Color.appGray)
             .opacity(configuration.isPressed ? 0.5 : 1.0)
             .clipShape(Capsule())
     }

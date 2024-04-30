@@ -17,7 +17,7 @@ struct SetGoalView: View {
                 } label: {
                     Text("南草津駅")
                 }
-                .buttonStyle(RoundedButton(isSelected: selectStaition))
+                .buttonStyle(RoundedRedButton(isSelected: selectStaition))
                 .disabled(selectStaition)
                 Spacer()
                 Button {
@@ -26,7 +26,7 @@ struct SetGoalView: View {
                 } label: {
                     Text("立命館大学")
                 }
-                .buttonStyle(RoundedButton(isSelected: selectRits))
+                .buttonStyle(RoundedRedButton(isSelected: selectRits))
                 .disabled(selectRits)
                 Spacer()
             }
@@ -35,20 +35,14 @@ struct SetGoalView: View {
             } label: {
                 Text("決定")
             }
-            .frame(width: 130,height:40)
-            .foregroundColor(.black)
-            .background(Color.appGray)
-            .clipShape(Capsule())
+            .buttonStyle(RoundedGrayButton())
             .padding(.top, 40)
             Button {
                 MenuView()
             } label: {
                 Text("戻る")
             }
-            .frame(width: 130, height: 40)
-            .foregroundColor(.black)
-            .background(Color.appGray)
-            .clipShape(Capsule())
+            .buttonStyle(RoundedGrayButton())
             Spacer()
         }
         .navigationTitle("My路線の追加")

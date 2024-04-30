@@ -4,7 +4,7 @@ import SwiftUI
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        let contentView = MenuView()
+        let contentView = HomeView()
         let hostingVC = UIHostingController(rootView: contentView)
         addChild(hostingVC)
         view.addSubview(hostingVC.view)

@@ -25,6 +25,6 @@ extension BusStopModel {
         BusStopModel(name: "向山ニュータウン", kana: "むこうやまにゅーたうん"),
         BusStopModel(name: "丸尾", kana: "まるお"),
         BusStopModel(name: "若草北口", kana: "わかくさきたぐち"),
-        BusStopModel(name: "立命館大学正門前", kana: "りつめいかんだいがくしょうもんまえ"),
+        BusStopModel(name: "立命館大学正門前", kana: "りつめいかんだいがくしょうもんまえ")
     ]
 }

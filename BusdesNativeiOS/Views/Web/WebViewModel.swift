@@ -3,13 +3,13 @@ import WebKit
 
 struct WebViewModel: UIViewRepresentable {
     let url: String
-    var webView = WKWebView()
-    var progressView = UIProgressView()
-    
+    let webView = WKWebView()
+    let progressView = UIProgressView()
+
     func makeCoordinator() -> Cordinator {
         Cordinator(parent: self)
     }
-    
+
     func makeUIView(context: Context) -> WKWebView {
         webView.addSubview(progressView)
         // UIProgressViewのレイアウト設定
@@ -19,10 +19,9 @@ struct WebViewModel: UIViewRepresentable {
         progressView.leadingAnchor.constraint(equalTo: webView.leadingAnchor, constant: 0).isActive = true
         return webView
     }
-    
+
     func updateUIView(_ uiView: WKWebView, context: Context) {
         context.coordinator.addProgressObserver()
-        
         guard let url = URL(string: url) else {
             return
         }

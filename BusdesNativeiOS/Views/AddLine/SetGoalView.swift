@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct SetGoalView: View {
-    @State var selected = 0
+    @State var selectStaition = true
+    @State var selectRits = false
     var body: some View {
         VStack {
             Text("どちらでバスを降りますか？")
@@ -11,27 +12,24 @@ struct SetGoalView: View {
             HStack {
                 Spacer()
                 Button {
-                    selected = 0
+                    selectStaition.toggle()
+                    selectRits.toggle()
                 } label: {
                     Text("南草津駅")
                 }
-                .frame(width: 130, height: 40)
-                .foregroundColor(.white)
-                .background(.red) // EF3124
-                .clipShape(Capsule())
+                .buttonStyle(RoundedButton(isSelected: selectStaition))
+                .disabled(selectStaition)
                 Spacer()
                 Button {
-                    selected = 1
+                    selectRits.toggle()
+                    selectStaition.toggle()
                 } label: {
                     Text("立命館大学")
                 }
-                .frame(width: 130, height: 40)
-                .foregroundColor(.white)
-                .background(.red)
-                .clipShape(Capsule())
-                 Spacer()
+                .buttonStyle(RoundedButton(isSelected: selectRits))
+                .disabled(selectRits)
+                Spacer()
             }
-            .padding(.bottom, 40)
             Button {
                 MenuView()
             } label: {
@@ -39,8 +37,9 @@ struct SetGoalView: View {
             }
             .frame(width: 130,height:40)
             .foregroundColor(.black)
-            .background(.gray)
+            .background(Color.appGray)
             .clipShape(Capsule())
+            .padding(.top, 40)
             Button {
                 MenuView()
             } label: {
@@ -48,7 +47,7 @@ struct SetGoalView: View {
             }
             .frame(width: 130, height: 40)
             .foregroundColor(.black)
-            .background(.gray)
+            .background(Color.appGray)
             .clipShape(Capsule())
             Spacer()
         }

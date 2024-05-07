@@ -12,14 +12,16 @@ struct HomeView: View {
             TabView(
                 selection: $selection,
                 content: {
-                        NavigationLink("aaa",destination: AddLineView())
+                        NavigationLink("aaa", destination: AddLineView())
                         .tabItem {
                             Text("Next bus")
-                        }.tag(1)
+                        }
+                        .tag(1)
                     Text("Tab Content 2")
                         .tabItem {
                             Text( "Timetable")
-                        }.tag(2)
+                        }
+                        .tag(2)
                 }
             )
             .navigationDestination(for: Path.self) { path in

@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct SetGoalView: View {
-    @State var selected = 0
+    @State var selectStaition = true
+    @State var selectRits = false
     var body: some View {
         VStack {
             Text("どちらでバスを降りますか？")
@@ -11,45 +12,37 @@ struct SetGoalView: View {
             HStack {
                 Spacer()
                 Button {
-                    selected = 0
+                    selectStaition.toggle()
+                    selectRits.toggle()
                 } label: {
                     Text("南草津駅")
                 }
-                .frame(width: 130, height: 40)
-                .foregroundColor(.white)
-                .background(.red) // EF3124
-                .clipShape(Capsule())
+                .buttonStyle(RoundedRedButton(isSelected: selectStaition))
+                .disabled(selectStaition)
                 Spacer()
                 Button {
-                    selected = 1
+                    selectRits.toggle()
+                    selectStaition.toggle()
                 } label: {
                     Text("立命館大学")
                 }
-                .frame(width: 130, height: 40)
-                .foregroundColor(.white)
-                .background(.red)
-                .clipShape(Capsule())
-                 Spacer()
+                .buttonStyle(RoundedRedButton(isSelected: selectRits))
+                .disabled(selectRits)
+                Spacer()
             }
-            .padding(.bottom, 40)
             Button {
                 MenuView()
             } label: {
                 Text("決定")
             }
-            .frame(width: 130,height:40)
-            .foregroundColor(.black)
-            .background(.gray)
-            .clipShape(Capsule())
+            .buttonStyle(RoundedGrayButton())
+            .padding(.top, 40)
             Button {
                 MenuView()
             } label: {
                 Text("戻る")
             }
-            .frame(width: 130, height: 40)
-            .foregroundColor(.black)
-            .background(.gray)
-            .clipShape(Capsule())
+            .buttonStyle(RoundedGrayButton())
             Spacer()
         }
         .navigationTitle("My路線の追加")

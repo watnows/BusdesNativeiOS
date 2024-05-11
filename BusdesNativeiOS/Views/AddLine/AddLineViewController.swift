@@ -1,10 +1,11 @@
-import UIKit
 import SwiftUI
+import UIKit
 
-class ViewController: UIViewController {
+class AddLineViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let contentView = HomeView()
+        let contentView = AddLineView()
         let hostingVC = UIHostingController(rootView: contentView)
         addChild(hostingVC)
         view.addSubview(hostingVC.view)

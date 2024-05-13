@@ -31,14 +31,12 @@ struct SetGoalView: View {
                 Spacer()
             }
             Button {
-                MenuView()
             } label: {
                 Text("決定")
             }
             .buttonStyle(RoundedGrayButton())
             .padding(.top, 40)
             Button {
-                MenuView()
             } label: {
                 Text("戻る")
             }

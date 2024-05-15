@@ -1,5 +1,11 @@
+import SnapKit
 import UIKit
 import WebKit
+
+protocol WebVIewControllerProtocol: AnyObject {
+    func setProgressbar()
+    func loadWebPage()
+}
 
 class WebViewController: UIViewController, WKUIDelegate {
     var webView: WKWebView!
@@ -16,24 +22,46 @@ class WebViewController: UIViewController, WKUIDelegate {
     }
 
     override func loadView() {
-        let webConfiguration = WKWebViewConfiguration()
-        webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        webView.uiDelegate = self
-        view = webView
-        guard let navigationBarH = self.navigationController?.navigationBar.frame.size.height else {
-            assertionFailure()
-            return
-        }
-        progressView = UIProgressView(frame: CGRect(x: 0.0, y: navigationBarH, width: self.view.frame.size.width, height: 0.0))
-        navigationController?.navigationBar.addSubview(progressView)
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: .new, context: nil)
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+        setupWebView()
+        setProgressbar()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let myURL = URL(string: url)
-        let myRequest = URLRequest(url: myURL!)
+        loadWebPage()
+    }
+
+    deinit {
+        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.isLoading))
+        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+    }
+}
+
+extension WebViewController: WebVIewControllerProtocol {
+    func setupWebView() {
+        let webConfiguration = WKWebViewConfiguration()
+        webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        webView.uiDelegate = self
+        view = webView
+    }
+
+    func setProgressbar() {
+        navigationController?.navigationBar.addSubview(progressView)
+        progressView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(2)
+        }
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: .new, context: nil)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+    }
+
+    func loadWebPage() {
+        guard let myURL = URL(string: url) else {
+            assertionFailure("Invalid URL")
+            return
+        }
+        let myRequest = URLRequest(url: myURL)
         webView.load(myRequest)
     }
 

@@ -6,7 +6,6 @@ enum Path: String, Hashable {
 
 struct HomeView: View {
     var controller: HomeViewControllerProtocol?
-    
     init(controller: HomeViewControllerProtocol) {
         self.controller = controller
     }

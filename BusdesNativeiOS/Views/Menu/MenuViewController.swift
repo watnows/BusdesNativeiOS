@@ -19,7 +19,6 @@ class MenuViewController: UIViewController {
 
 extension MenuViewController: MenuViewControllerProtocol {
     func next(url: String) {
-        print(url)
         navigationController?.pushViewController(WebViewController(url: url), animated: true)
     }
 }

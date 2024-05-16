@@ -1,6 +1,12 @@
 import SwiftUI
 
 struct AddLineView: View {
+//    var controller: AddLineViewControllerProtocol?
+//
+//    init(controller: AddLineViewControllerProtocol) {
+//        self.controller = controller
+//    }
+
     @State var searchText = ""
     @State var busStopList = BusStopModel.dataList
     private var filteredItem: [BusStopModel] {
@@ -13,16 +19,26 @@ struct AddLineView: View {
             Text("どこからバスを乗りますか？")
                 .font(.headline)
             List(filteredItem, id: \.self) { busStop in
-                NavigationLink(destination: SetGoalView(), label: {
-                    VStack(alignment: .leading) {
-                        Text(busStop.kana)
-                            .font(.caption)
-                            .multilineTextAlignment(.leading)
-                        Text(busStop.name)
-                            .font(.headline)
-                            .multilineTextAlignment(.leading)
+                Button {
+//                    controller?.tapBusStop()
+                } label: {
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(busStop.kana)
+                                .font(.caption)
+                                .foregroundStyle(.black)
+                                .multilineTextAlignment(.leading)
+                            Text(busStop.name)
+                                .font(.headline)
+                                .foregroundStyle(.black)
+                                .multilineTextAlignment(.leading)
+                        }
+                        .foregroundStyle(.black)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .foregroundStyle(.gray)
                     }
-                })
+                }
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .listStyle(.inset)

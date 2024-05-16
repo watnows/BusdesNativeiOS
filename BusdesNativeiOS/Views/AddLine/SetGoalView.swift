@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct SetGoalView: View {
+    var controller: SetGoalViewControllerProtocol?
+
+    init(controller: SetGoalViewControllerProtocol) {
+        self.controller = controller
+    }
     @State var selectStaition = true
     @State var selectRits = false
     var body: some View {
@@ -48,5 +53,5 @@ struct SetGoalView: View {
 }
 
 #Preview {
-    SetGoalView()
+    SetGoalView(controller: SetGoalViewController())
 }

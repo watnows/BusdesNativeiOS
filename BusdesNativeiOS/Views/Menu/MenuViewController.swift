@@ -1,15 +1,24 @@
 import SwiftUI
 import UIKit
 
-class MenuViewController: UIViewController {
+protocol MenuViewControllerProtocol: AnyObject {
+    func next(url: String)
+}
 
+class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        let contentView = MenuView()
+        let contentView = MenuView(controller: self)
         let hostingVC = UIHostingController(rootView: contentView)
         addChild(hostingVC)
         view.addSubview(hostingVC.view)
         hostingVC.didMove(toParent: self)
         hostingVC.coverView(parent: view)
+    }
+}
+
+extension MenuViewController: MenuViewControllerProtocol {
+    func next(url: String) {
+        navigationController?.pushViewController(WebViewController(url: url), animated: true)
     }
 }

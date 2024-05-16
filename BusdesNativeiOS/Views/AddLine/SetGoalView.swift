@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct SetGoalView: View {
+    var controller: SetGoalViewControllerProtocol?
+
+    init(controller: SetGoalViewControllerProtocol) {
+        self.controller = controller
+    }
     @State var selectStaition = true
     @State var selectRits = false
     var body: some View {
@@ -31,14 +36,12 @@ struct SetGoalView: View {
                 Spacer()
             }
             Button {
-                MenuView()
             } label: {
                 Text("決定")
             }
             .buttonStyle(RoundedGrayButton())
             .padding(.top, 40)
             Button {
-                MenuView()
             } label: {
                 Text("戻る")
             }
@@ -50,5 +53,5 @@ struct SetGoalView: View {
 }
 
 #Preview {
-    SetGoalView()
+    SetGoalView(controller: SetGoalViewController())
 }

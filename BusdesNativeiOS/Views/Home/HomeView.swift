@@ -1,48 +1,35 @@
 import SwiftUI
 
-enum Path: String, Hashable {
-    case menu
-}
-
 struct HomeView: View {
-    @State private var path = [Path]()
+    var controller: HomeViewControllerProtocol?
+    init(controller: HomeViewControllerProtocol) {
+        self.controller = controller
+    }
+
     @State var selection: Int = 1
     var body: some View {
-        NavigationStack(path: $path) {
-            TabView(
-                selection: $selection,
-                content: {
-                        NavigationLink("aaa", destination: AddLineView())
-                        .tabItem {
-                            Text("Next bus")
-                        }
-                        .tag(1)
-                    Text("Tab Content 2")
-                        .tabItem {
-                            Text( "Timetable")
-                        }
-                        .tag(2)
+        TabView(
+            selection: $selection,
+            content: {
+                Button {
+                    controller?.goAddLine()
+                } label: {
+                    Text("aaa")
                 }
-            )
-            .navigationDestination(for: Path.self) { path in
-                switch path {
-                case .menu:
-                    MenuView()
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        path.append(.menu)
-                    } label: {
-                        Image(systemName: "gearshape")
+                    .tabItem {
+                        Text("Next bus")
                     }
-                }
+                    .tag(1)
+                Text("Tab Content 2")
+                    .tabItem {
+                        Text( "Timetable")
+                    }
+                    .tag(2)
             }
-        }
+        )
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(controller: HomeViewController())
 }

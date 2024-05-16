@@ -3,6 +3,7 @@ import UIKit
 
 protocol HomeViewControllerProtocol: AnyObject {
     func goMenu()
+    func goAddLine()
 }
 
 class HomeViewController: UIViewController {
@@ -22,5 +23,8 @@ class HomeViewController: UIViewController {
 extension HomeViewController: HomeViewControllerProtocol {
     @objc func goMenu() {
         self.navigationController?.pushViewController(MenuViewController(), animated: true)
+    }
+    func goAddLine() {
+        self.navigationController?.pushViewController(AddLineViewController(), animated: true)
     }
 }

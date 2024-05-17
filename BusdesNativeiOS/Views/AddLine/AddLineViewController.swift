@@ -6,7 +6,7 @@ class AddLineViewController: UIViewController {
     let searchBar = UISearchBar()
     let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(R.reuseIdentifier.addLineTableViewCell)
+        tableView.register(R.nib.addLineTableViewCell)
         return tableView
     }()
     var searchQuery: String = ""

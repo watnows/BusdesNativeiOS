@@ -4,12 +4,12 @@ class AddLineTableViewCell: UITableViewCell {
     static let height: CGFloat = 64
     @IBOutlet private var busStopNameLabel: UILabel! {
         didSet {
-            busStopNameLabel.textColor = .systemGray
+            busStopNameLabel.textColor = .black
         }
     }
     @IBOutlet private var busStopKanaLabel: UILabel! {
         didSet {
-            busStopKanaLabel.textColor = .black
+            busStopKanaLabel.textColor = .gray
         }
     }
 

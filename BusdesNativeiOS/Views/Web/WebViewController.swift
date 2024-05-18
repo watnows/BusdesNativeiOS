@@ -31,6 +31,10 @@ class WebViewController: UIViewController, WKUIDelegate {
         loadWebPage()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        progressView.removeFromSuperview()
+    }
+
     deinit {
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.isLoading))
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))

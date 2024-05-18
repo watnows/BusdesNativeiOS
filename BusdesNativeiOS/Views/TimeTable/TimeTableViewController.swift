@@ -1,29 +1,33 @@
-//
-//  TimeTableViewController.swift
-//  BusdesNativeiOS
-//
-//  Created by 黒川龍之介 on 2024/05/19.
-//
-
+import SwiftUI
 import UIKit
 
+protocol TimeTableViewControllerProtocol: AnyObject {
+}
+
 class TimeTableViewController: UIViewController {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let contentView = TimeTableVIew(controller: self)
+        let hostingVC = UIHostingController(rootView: contentView)
+        addChild(hostingVC)
+        view.addSubview(hostingVC.view)
+        hostingVC.didMove(toParent: self)
+        hostingVC.coverView(parent: view)
 
-        // Do any additional setup after loading the view.
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(goMenu))
     }
-    
+}
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+extension TimeTableViewController: TimeTableViewControllerProtocol {
+    @objc func goMenu() {
+        self.navigationController?.pushViewController(MenuViewController(), animated: true)
     }
-    */
-
 }

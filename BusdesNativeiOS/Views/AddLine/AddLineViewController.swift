@@ -88,7 +88,5 @@ extension AddLineViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         navigationItem.title = "My路線の追加"
-        navigationController?.navigationBar.backgroundColor = .systemBackground
-        tabBarController?.tabBar.backgroundColor = .systemBackground
     }
 }

@@ -36,12 +36,14 @@ struct SetGoalView: View {
                 Spacer()
             }
             Button {
+                controller?.goHome()
             } label: {
                 Text("決定")
             }
             .buttonStyle(RoundedGrayButton())
             .padding(.top, 40)
             Button {
+                controller?.goHome()
             } label: {
                 Text("戻る")
             }

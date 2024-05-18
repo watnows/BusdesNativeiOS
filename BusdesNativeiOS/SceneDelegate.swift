@@ -9,8 +9,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         let window = UIWindow(windowScene: windowScene)
-        let viewController = UINavigationController(rootViewController: HomeViewController())
-        window.rootViewController = viewController
+
+        let tabBarController = UITabBarController()
+        let firstViewController = UINavigationController(rootViewController: HomeViewController())
+        firstViewController.tabBarItem = UITabBarItem(title: "Next bus", image: UIImage(systemName: "deskclock"), tag: 0)
+
+        let secondViewController = UINavigationController(rootViewController: TimeTableViewController())
+        secondViewController.tabBarItem = UITabBarItem(title: "Timetable", image: UIImage(systemName: "calendar.badge.clock"), tag: 1)
+
+        tabBarController.viewControllers = [firstViewController, secondViewController]
+        window.rootViewController = tabBarController
         self.window = window
         self.window?.makeKeyAndVisible()
     }

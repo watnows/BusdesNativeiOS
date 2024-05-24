@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let firstViewController = UINavigationController(rootViewController: HomeViewController())
         firstViewController.tabBarItem = UITabBarItem(title: "Next bus", image: UIImage(systemName: "deskclock"), tag: 0)
 
-        let secondViewController = UINavigationController(rootViewController: TimeTableViewController())
+        let secondViewController = UINavigationController(rootViewController: TimeTableViewController(timeTable: TimeList.demo))
         secondViewController.tabBarItem = UITabBarItem(title: "Timetable", image: UIImage(systemName: "calendar.badge.clock"), tag: 1)
 
         tabBarController.viewControllers = [firstViewController, secondViewController]

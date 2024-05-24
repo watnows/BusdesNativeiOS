@@ -5,6 +5,7 @@
 disabled_rules:
     - opening_brace # SwiftUI使ってると定義と括弧の始点が同じ行に来ないため
     - identifier_name
+    - cyclomatic_complexity
 #デフォルト時無効で有効にするルール
 opt_in_rules:
     - attributes

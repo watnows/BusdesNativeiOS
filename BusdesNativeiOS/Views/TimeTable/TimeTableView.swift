@@ -1,16 +1,11 @@
 import SwiftUI
 
 struct TimeTableView: View{
-    var controller: TimeTableViewControllerProtocol?
-    @o var timeTable: TimeList
-    init(controller: TimeTableViewControllerProtocol) {
-        self.controller = controller
-        self.timeTable = controller.timeTable
-    }
+    @ObservedObject var viewModel: TimeTableViewModel
     @State var currentTab = 0
     @Namespace var namespace
     let hours = [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-    let goals = ["立命館大学→南草津駅", "南草津駅→立命館大学"]
+    let goals = ["南草津駅→立命館大学", "立命館大学→南草津駅"]
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -26,18 +21,24 @@ struct TimeTableView: View{
             TabView(selection: $currentTab) {
                 List {
                     ForEach(hours, id: \.self) { hour in
-                        let timeTableInfo = timeTable.timesForHour(hour)
-                        TimeTableParts(hour: hour, timeTableinfo: timeTableInfo)
+                        let timeTableInfo = viewModel.timeTableToRits?.timesForHour(hour) ?? []
+                        if !timeTableInfo.isEmpty {
+                            TimeTableParts(hour: hour, timeTableInfo: timeTableInfo)
+                        }
                     }
                 }
                 .listStyle(.plain)
                 .ignoresSafeArea()
                 .tag(0)
                 List {
-//                    ForEach(0 ..< hours.count) {hour in
-//                        TimeTableParts(hour: hour, time: ["16:03", "17:03", "17:30"], busVia: ["パナソニック", "パナソニック", "パナソニック"])
-//                    }
+                    ForEach(hours, id: \.self) { hour in
+                        let timeTableInfo = viewModel.timeTableFromRits?.timesForHour(hour) ?? []
+                        if !timeTableInfo.isEmpty {
+                            TimeTableParts(hour: hour, timeTableInfo: timeTableInfo)
+                        }
+                    }
                 }
+                .listStyle(.plain)
                 .ignoresSafeArea()
                 .tag(1)
             }
@@ -68,5 +69,5 @@ extension TimeTableView {
 }
 
 #Preview {
-    TimeTableView(controller: TimeTableViewController(timeTable: TimeList.demo))
+    TimeTableView(viewModel: TimeTableViewModel(controller: TimeTableViewController()))
 }

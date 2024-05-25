@@ -1,16 +1,13 @@
 import SwiftUI
 
 struct MenuView: View {
-    var controller: MenuViewControllerProtocol?
-
-    init(controller: MenuViewControllerProtocol) {
-        self.controller = controller
-    }
+    @ObservedObject var viewModel: MenuViewModel
     var body: some View {
         List {
             Section {
                 Button {
-                    controller?.next(url: MenuItem.feedback.pageURL)
+                    
+                    viewModel.goWeb(url: MenuItem.feedback.pageURL)
                 } label: {
                     HStack {
                         Text(MenuItem.feedback.pageName)
@@ -21,7 +18,7 @@ struct MenuView: View {
                     }
                 }
                 Button {
-                    controller?.next(url: MenuItem.terms.pageURL)
+                    viewModel.goWeb(url: MenuItem.terms.pageURL)
                 } label: {
                     HStack {
                         Text(MenuItem.terms.pageName)
@@ -32,7 +29,7 @@ struct MenuView: View {
                     }
                 }
                 Button {
-                    controller?.next(url: MenuItem.twitter.pageURL)
+                    viewModel.goWeb(url: MenuItem.twitter.pageURL)
                 } label: {
                     HStack {
                         Text(MenuItem.twitter.pageName)
@@ -47,7 +44,7 @@ struct MenuView: View {
             }
             Section {
                 Button {
-                    controller?.next(url: MenuItem.schedule.pageURL)
+                    viewModel.goWeb(url: MenuItem.schedule.pageURL)
                 } label: {
                     HStack {
                         Text(MenuItem.schedule.pageName)
@@ -58,7 +55,7 @@ struct MenuView: View {
                     }
                 }
                 Button {
-                    controller?.next(url: MenuItem.timetable.pageURL)
+                    viewModel.goWeb(url: MenuItem.timetable.pageURL)
                 } label: {
                     HStack {
                         Text(MenuItem.timetable.pageName)
@@ -76,5 +73,5 @@ struct MenuView: View {
 }
 
 #Preview {
-    MenuView(controller: MenuViewController())
+    MenuView(viewModel: MenuViewModel(controller: MenuViewController()))
 }

@@ -1,15 +1,10 @@
 import SwiftUI
 
 struct HomeView: View {
-    var controller: HomeViewControllerProtocol?
-    init(controller: HomeViewControllerProtocol) {
-        self.controller = controller
-    }
-
-    @State var selection: Int = 1
+    @ObservedObject var viewModel: HomeViewModel
     var body: some View {
         Button {
-            controller?.goAddLine()
+            viewModel.goAddLine()
         } label: {
             Text("aaa")
         }
@@ -17,5 +12,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(controller: HomeViewController())
+    HomeView(viewModel: HomeViewModel(controller: HomeViewController()))
 }

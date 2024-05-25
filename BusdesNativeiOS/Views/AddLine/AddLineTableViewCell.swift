@@ -2,6 +2,7 @@ import UIKit
 
 class AddLineTableViewCell: UITableViewCell {
     static let height: CGFloat = 64
+    private var viewModel: AddLineCellViewModel!
     @IBOutlet private var busStopNameLabel: UILabel! {
         didSet {
             busStopNameLabel.textColor = .black
@@ -21,15 +22,9 @@ class AddLineTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    func configureCell(_ data: AddLineTableViewCell.Data) {
-        busStopNameLabel.text = data.busStopName
-        busStopKanaLabel.text = data.busStopKana
-    }
-}
-
-extension AddLineTableViewCell {
-    struct Data {
-        let busStopName: String
-        let busStopKana: String
+    func configure(with viewModel: AddLineCellViewModel) {
+        self.viewModel = viewModel
+        busStopNameLabel.text = viewModel.busStopName
+        busStopKanaLabel.text = viewModel.busStopKana
     }
 }

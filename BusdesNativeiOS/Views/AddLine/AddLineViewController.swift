@@ -1,3 +1,4 @@
+import Combine
 import SnapKit
 import SwiftUI
 import UIKit
@@ -9,15 +10,15 @@ class AddLineViewController: UIViewController {
         tableView.register(R.nib.addLineTableViewCell)
         return tableView
     }()
-    var searchQuery: String = ""
-    var busStops = BusStopModel.dataList
-    var filteredData = [BusStopModel]()
+    private var viewModel: AddLineViewModel!
+    private var cancellables = Set<AnyCancellable>()
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     init() {
         super.init(nibName: nil, bundle: nil)
+        self.viewModel = AddLineViewModel(busStops: BusStopModel.dataList)
     }
 
     override func viewDidLoad() {
@@ -25,27 +26,22 @@ class AddLineViewController: UIViewController {
         searchBar.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        filteredData = busStops
+        bindViewModel()
         setUpUI()
     }
 }
 
 extension AddLineViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            filteredData = busStops
-        } else {
-            filteredData = busStops.filter {
-                $0.name.contains(searchText) || $0.kana.contains(searchText)
-            }
-        }
+        viewModel.searchQuery = searchText
         tableView.reloadData()
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-            searchBar.resignFirstResponder()
-        }
+        searchBar.resignFirstResponder()
+    }
 }
+
 extension AddLineViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return AddLineTableViewCell.height
@@ -59,20 +55,33 @@ extension AddLineViewController: UITableViewDelegate {
 
 extension AddLineViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredData.count
+        return viewModel.filteredData.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.addLineTableViewCell, for: indexPath)
         guard let cell = cell else { fatalError("Invalid TableViewCell") }
-        let kana = filteredData[indexPath.row].kana
-        let name = filteredData[indexPath.row].name
-        cell.configureCell(.init(busStopName: name, busStopKana: kana))
+        let busStop = viewModel.filteredData[indexPath.row]
+        let cellViewModel = AddLineCellViewModel(busStopName: busStop.name, busStopKana: busStop.kana)
+        cell.configure(with: cellViewModel)
         return cell
     }
 }
 
 extension AddLineViewController {
+    private func bindViewModel()  {
+        viewModel.$searchQuery
+            .sink { [weak self] query in
+                self?.viewModel.filterBusStops(with: query)
+            }
+            .store(in: &cancellables)
+        viewModel.$filteredData
+            .sink { [weak self] _ in
+                self?.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
+
     private func setUpUI() {
         view.addSubview(searchBar)
         searchBar.snp.makeConstraints {
@@ -80,7 +89,6 @@ extension AddLineViewController {
             $0.left.equalToSuperview()
             $0.right.equalToSuperview()
         }
-
         view.addSubview(tableView)
         tableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom)

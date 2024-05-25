@@ -7,9 +7,12 @@ protocol HomeViewControllerProtocol: AnyObject {
 }
 
 class HomeViewController: UIViewController {
+    private var viewModel: HomeViewModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let contentView = HomeView(controller: self)
+        viewModel = HomeViewModel(controller: self)
+        let contentView = HomeView(viewModel: viewModel)
         let hostingVC = UIHostingController(rootView: contentView)
         addChild(hostingVC)
         view.addSubview(hostingVC.view)

@@ -17,6 +17,7 @@ class MenuViewController: UIViewController {
         hostingVC.didMove(toParent: self)
         hostingVC.coverView(parent: view)
         navigationItem.title = "設定"
+        self.tabBarController?.tabBar.isHidden = true
     }
 }
 

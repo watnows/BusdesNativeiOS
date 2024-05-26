@@ -4,6 +4,7 @@ import UIKit
 protocol HomeViewControllerProtocol: AnyObject {
     func goMenu()
     func goAddLine()
+    func fetchNextBus(fr: String, to: String, completion: @escaping (Result<ApproachInfo, any Error>) -> Void)
 }
 
 class HomeViewController: UIViewController {
@@ -33,5 +34,32 @@ extension HomeViewController: HomeViewControllerProtocol {
     }
     func goAddLine() {
         self.navigationController?.pushViewController(AddLineViewController(), animated: true)
+    }
+
+    func fetchNextBus(fr: String, to: String, completion: @escaping (Result<ApproachInfo, any Error>) -> Void)  {
+        let urlString = "https://busdesrits.com/bus/time/v3?fr=\(fr)&to=\(to)"
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
+            return
+        }
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No data", code: -1, userInfo: nil)))
+                return
+            }
+            do {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let approachInfo = try decoder.decode(ApproachInfo.self, from: data)
+                completion(.success(approachInfo))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        task.resume()
     }
 }

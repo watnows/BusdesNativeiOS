@@ -93,8 +93,9 @@ extension AddLineViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom)
             $0.width.equalToSuperview()
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalToSuperview()
         }
         navigationItem.title = "My路線の追加"
+        self.tabBarController?.tabBar.isHidden = true
     }
 }

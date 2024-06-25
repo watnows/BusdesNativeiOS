@@ -12,7 +12,7 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = HomeViewModel(controller: self)
+        viewModel = HomeViewModel(bus: ApproachInfo(approachInfos: [NextBusModel.demo]), myRouteList: [MyRoute.demo], controller: self)
         let contentView = HomeView(viewModel: viewModel)
         let hostingVC = UIHostingController(rootView: contentView)
         addChild(hostingVC)

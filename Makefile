@@ -16,12 +16,8 @@ setup: # Install tools
 
 .PHONY: install-mint
 install-mint: # Install Mint dependencies
-	git clone --branch 0.17.5 https://github.com/yonaskolb/Mint
-	cd Mint
-	make
-	cd ..
-	rm -rf Mint
-	mint bootstrap --overwrite y
+	brew install mint
+	mint bootstrap
 		
 .PHONY: xcodegen
 xcodegen: # Generate Xcode project with xcodegen

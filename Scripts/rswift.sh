@@ -1,10 +1,6 @@
-if [ $(uname -m) = "arm64" ]; then
-  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:${PATH+:$PATH}";
-fi
-
-# Mintでrswiftを実行
-if which mint >/dev/null; then
-  xcrun --sdk macosx mint run R.swift rswift generate "${SRCROOT}/R.generated.swift"
+if mint list | grep -q 'R.swift'; then
+    mint run R.swift rswift generate "$SRCROOT/BusdesNativeiOS/Generated/R.generated.swift"
 else
-  echo "warning: Mint not installed"
+    echo "error: R.swift not installed; run 'mint bootstrap' to install"
+    return -1
 fi

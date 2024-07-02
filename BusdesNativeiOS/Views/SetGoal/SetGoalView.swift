@@ -1,24 +1,28 @@
 import SwiftUI
 
 struct SetGoalView: View {
-    var controller: SetGoalViewControllerProtocol?
+    var controller: SetGoalViewControllerProtocol
 
     init(controller: SetGoalViewControllerProtocol) {
         self.controller = controller
     }
     @State var selectStaition = true
     @State var selectRits = false
+    @State var selectedGoal = "南草津駅"
     var body: some View {
         VStack {
             Text("どちらでバスを降りますか？")
                 .font(.headline)
                 .padding(.top, 100)
-            Spacer()
+            Text("乗り場：\(controller.from)")
+                .font(.headline)
+                .padding( .top, 100)
             HStack {
                 Spacer()
                 Button {
                     selectStaition.toggle()
                     selectRits.toggle()
+                    selectedGoal = "南草津駅"
                 } label: {
                     Text("南草津駅")
                 }
@@ -28,6 +32,7 @@ struct SetGoalView: View {
                 Button {
                     selectRits.toggle()
                     selectStaition.toggle()
+                    selectedGoal = "立命館大学"
                 } label: {
                     Text("立命館大学")
                 }
@@ -36,14 +41,14 @@ struct SetGoalView: View {
                 Spacer()
             }
             Button {
-                controller?.goHome()
+                controller.setRoute(to: selectedGoal)
             } label: {
                 Text("決定")
             }
             .buttonStyle(RoundedGrayButton())
             .padding(.top, 40)
             Button {
-                controller?.goHome()
+                controller.goHome()
             } label: {
                 Text("戻る")
             }

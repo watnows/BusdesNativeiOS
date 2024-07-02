@@ -48,7 +48,9 @@ extension AddLineViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        navigationController?.pushViewController(SetGoalViewController(), animated: true)
+        let vc = SetGoalViewController()
+        vc.from = viewModel.filteredData[indexPath.row].name
+        navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

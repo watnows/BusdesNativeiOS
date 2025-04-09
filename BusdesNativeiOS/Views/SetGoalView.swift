@@ -1,11 +1,7 @@
 import SwiftUI
 
 struct SetGoalView: View {
-    var controller: SetGoalViewControllerProtocol
-
-    init(controller: SetGoalViewControllerProtocol) {
-        self.controller = controller
-    }
+    @ObservedObject var viewmodel: SetGoalViewModel
     @State var selectStaition = true
     @State var selectRits = false
     @State var selectedGoal = "南草津駅"
@@ -14,7 +10,7 @@ struct SetGoalView: View {
             Text("どちらでバスを降りますか？")
                 .font(.headline)
                 .padding(.top, 100)
-            Text("乗り場：\(controller.from)")
+            Text("乗り場：\(viewmodel.from)")
                 .font(.headline)
                 .padding( .top, 100)
             HStack {
@@ -41,14 +37,19 @@ struct SetGoalView: View {
                 Spacer()
             }
             Button {
-                controller.setRoute(to: selectedGoal)
+                viewmodel.setRoute(to: selectedGoal)
             } label: {
                 Text("決定")
             }
             .buttonStyle(RoundedGrayButton())
             .padding(.top, 40)
+            .alert(isPresented: $viewmodel.showAlert) {
+                Alert(title: Text("設定エラー"),
+                                  message: Text("乗り場と降り場が同じようです"),
+                                  dismissButton: .default(Text("OK"))
+                      )
+            }
             Button {
-                controller.goHome()
             } label: {
                 Text("戻る")
             }
@@ -57,8 +58,4 @@ struct SetGoalView: View {
         }
         .navigationTitle("My路線の追加")
     }
-}
-
-#Preview {
-    SetGoalView(controller: SetGoalViewController())
 }

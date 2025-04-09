@@ -5,10 +5,7 @@ struct MenuView: View {
     var body: some View {
         List {
             Section {
-                Button {
-                    
-                    viewModel.goWeb(url: MenuItem.feedback.pageURL)
-                } label: {
+                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.feedback.pageURL)){
                     HStack {
                         Text(MenuItem.feedback.pageName)
                             .foregroundStyle(.black)
@@ -17,9 +14,7 @@ struct MenuView: View {
                             .foregroundStyle(.gray)
                     }
                 }
-                Button {
-                    viewModel.goWeb(url: MenuItem.terms.pageURL)
-                } label: {
+                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.terms.pageURL)){
                     HStack {
                         Text(MenuItem.terms.pageName)
                             .foregroundStyle(.black)
@@ -28,9 +23,7 @@ struct MenuView: View {
                             .foregroundStyle(.gray)
                     }
                 }
-                Button {
-                    viewModel.goWeb(url: MenuItem.twitter.pageURL)
-                } label: {
+                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.twitter.pageURL)){
                     HStack {
                         Text(MenuItem.twitter.pageName)
                             .foregroundStyle(.black)
@@ -43,9 +36,7 @@ struct MenuView: View {
                 Text("設定")
             }
             Section {
-                Button {
-                    viewModel.goWeb(url: MenuItem.schedule.pageURL)
-                } label: {
+                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.schedule.pageURL)){
                     HStack {
                         Text(MenuItem.schedule.pageName)
                             .foregroundStyle(.black)
@@ -54,9 +45,7 @@ struct MenuView: View {
                             .foregroundStyle(.gray)
                     }
                 }
-                Button {
-                    viewModel.goWeb(url: MenuItem.timetable.pageURL)
-                } label: {
+                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.timetable.pageURL)){
                     HStack {
                         Text(MenuItem.timetable.pageName)
                             .foregroundStyle(.black)
@@ -72,6 +61,3 @@ struct MenuView: View {
     }
 }
 
-#Preview {
-    MenuView(viewModel: MenuViewModel(controller: MenuViewController()))
-}

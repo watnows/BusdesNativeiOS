@@ -44,6 +44,11 @@ struct TimeTableView: View{
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
+        .onAppear {
+            if viewModel.timeTableToRits == nil {
+                viewModel.fetchTimeTable()
+            }
+        }
     }
 }
 
@@ -66,8 +71,4 @@ extension TimeTableView {
         }
         .buttonStyle(.plain)
     }
-}
-
-#Preview {
-    TimeTableView(viewModel: TimeTableViewModel(controller: TimeTableViewController()))
 }

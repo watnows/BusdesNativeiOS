@@ -1,10 +1,10 @@
 import Foundation
 
 struct MyRoute: Codable {
-    var fr: String
+    var from: String
     var to: String
 }
 
 extension MyRoute {
-    static let demo = MyRoute(fr: "立命館大学", to: "南草津駅")
+    static let demo = MyRoute(from: "立命館大学", to: "南草津駅")
 }

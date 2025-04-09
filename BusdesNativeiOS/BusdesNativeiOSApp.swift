@@ -1,8 +1,19 @@
-//
-//  BusdesNativeiOSApp.swift
-//  BusdesNativeiOS
-//
-//  Created by 黒川龍之介 on 2024/11/24.
-//
+import SwiftUI
 
-import Foundation
+@main
+struct BusdesNativeiOSApp: App {
+    var body: some Scene {
+        WindowGroup {
+            BaseView(
+                homeViewModel: HomeViewModel(
+                    bus: ApproachInfo(
+                        approachInfos: [NextBusModel.demo]
+                    ),
+                    myRouteList:
+                        [MyRoute.demo]
+                ),
+                timeTableViewModel: TimeTableViewModel()
+            )
+        }
+    }
+}

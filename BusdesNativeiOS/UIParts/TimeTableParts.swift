@@ -24,7 +24,3 @@ struct TimeTableParts: View{
         }
     }
 }
-
-#Preview {
-    TimeTableParts(hour: 10, timeTableInfo: TimeTableInfo.demo)
-}

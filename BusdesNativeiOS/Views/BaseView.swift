@@ -1,18 +1,34 @@
-//
-//  BaseView.swift
-//  BusdesNativeiOS
-//
-//  Created by 黒川龍之介 on 2024/11/24.
-//
-
 import SwiftUI
 
 struct BaseView: View {
+    @ObservedObject var homeViewModel: HomeViewModel
+    @ObservedObject var timeTableViewModel: TimeTableViewModel
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            TabView {
+                HomeView(viewModel: homeViewModel)
+                    .tabItem {
+                        Image(systemName: "deskclock")
+                        Text("Next bus")
+                    }
+                TimeTableView(viewModel: timeTableViewModel)
+                    .tabItem {
+                        Image(systemName: "calendar.badge.clock")
+                        Text("Time table")
+                    }
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Busdes!")
+                        .foregroundStyle(.black)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink(destination: MenuView()) {
+                        Image(systemName: "gearshape")
+                            .foregroundStyle(.black)
+                    }
+                }
+            }
+        }
     }
-}
-
-#Preview {
-    BaseView()
 }

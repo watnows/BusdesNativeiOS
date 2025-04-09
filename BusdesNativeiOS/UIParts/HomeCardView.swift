@@ -8,7 +8,7 @@ struct HomeCardView: View {
     var body: some View {
         VStack {
             HStack{
-                Text(myRoute.fr)
+                Text(myRoute.from)
                     .font(.title2)
                     .padding(.leading, 30)
                 Spacer()
@@ -42,7 +42,4 @@ struct HomeCardView: View {
             }
         }
     }
-}
-#Preview {
-    HomeCardView(viewModel: HomeViewModel(bus: ApproachInfo(approachInfos: [NextBusModel.demo]), myRouteList: [MyRoute.demo], controller: HomeViewController()), myRoute: MyRoute(fr: "", to: ""))
 }

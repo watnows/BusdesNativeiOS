@@ -1,18 +1,18 @@
-//
-//  AddLineView.swift
-//  BusdesNativeiOS
-//
-//  Created by 黒川龍之介 on 2024/12/08.
-//
-
 import SwiftUI
 
 struct AddLineView: View {
+    @ObservedObject var viewModel = AddLineViewModel(busStops: BusStopModel.dataList)
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(viewModel.filteredData, id: \.self) { busStop in
+                NavigationLink(busStop.name){
+                    SetGoalView(viewmodel: SetGoalViewModel())
+                }
+            }
+        }
+        .searchable(text: $viewModel.searchQuery)
+        .onChange(of: viewModel.searchQuery) {
+            viewModel.filterBusStops(with: viewModel.searchQuery)
+        }
     }
-}
-
-#Preview {
-    AddLineView()
 }

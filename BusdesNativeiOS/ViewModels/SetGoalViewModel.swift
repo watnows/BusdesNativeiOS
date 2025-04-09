@@ -1,8 +1,22 @@
-//
-//  SetGoalViewModel.swift
-//  BusdesNativeiOS
-//
-//  Created by 黒川龍之介 on 2024/12/10.
-//
+import Combine
+import SwiftUI
 
-import Foundation
+class SetGoalViewModel: ObservableObject {
+    var from: String
+    var showAlert = false
+    
+    init(from: String, showAlert: Bool = false) {
+        self.from = from
+        self.showAlert = showAlert
+    }
+
+    func setRoute(to: String) {
+        if from == to {
+            showAlert.toggle()
+        } else {
+            //保存機能書きたい！！
+            
+        }
+        print(from,to)
+    }
+}

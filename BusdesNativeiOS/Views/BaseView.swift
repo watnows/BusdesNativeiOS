@@ -3,10 +3,11 @@ import SwiftUI
 struct BaseView: View {
     @ObservedObject var homeViewModel: HomeViewModel
     @ObservedObject var timeTableViewModel: TimeTableViewModel
+    @State private var path = NavigationPath()
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             TabView {
-                HomeView(viewModel: homeViewModel)
+                HomeView(viewModel: homeViewModel, path: $path)
                     .tabItem {
                         Image(systemName: "deskclock")
                         Text("Next bus")
@@ -27,6 +28,11 @@ struct BaseView: View {
                         Image(systemName: "gearshape")
                             .foregroundStyle(.black)
                     }
+                }
+            }
+            .navigationDestination(for: String.self) { value in
+                if(value ==  "AddLine") {
+                    AddLineView(path: $path)
                 }
             }
         }

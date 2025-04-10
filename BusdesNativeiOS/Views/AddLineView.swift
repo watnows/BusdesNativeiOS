@@ -2,11 +2,12 @@ import SwiftUI
 
 struct AddLineView: View {
     @ObservedObject var viewModel = AddLineViewModel(busStops: BusStopModel.dataList)
+    @Binding var path: NavigationPath
     var body: some View {
         List {
             ForEach(viewModel.filteredData, id: \.self) { busStop in
                 NavigationLink(busStop.name){
-                    SetGoalView(viewmodel: SetGoalViewModel())
+                    SetGoalView(viewmodel: SetGoalViewModel(from: busStop.name), path: $path)
                 }
             }
         }

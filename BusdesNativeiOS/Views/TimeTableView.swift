@@ -46,6 +46,7 @@ struct TimeTableView: View{
         }
         .onAppear {
             if viewModel.timeTableToRits == nil {
+                print("fetch")
                 viewModel.fetchTimeTable()
             }
         }

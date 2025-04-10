@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
+    @Binding var path: NavigationPath
     var body: some View {
         ZStack {
             if !viewModel.myRouteList.isEmpty {
@@ -16,9 +17,7 @@ struct HomeView: View {
             } else {
                 Text("路線を追加してください")
             }
-            NavigationLink("+") {
-                AddLineView()
-            }
+            NavigationLink("+", value: "AddLine")
         }
     }
 }

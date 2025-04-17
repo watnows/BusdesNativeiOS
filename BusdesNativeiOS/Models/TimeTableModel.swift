@@ -124,15 +124,3 @@ struct TimeList: Codable {
         }
     }
 }
-
-extension TimeTableInfo {
-    static let demo = [TimeTableInfo(via: "パナ", min: "0", busStop: "パナソニック")]
-}
-
-extension TimeList {
-    static let demo = TimeList(five: TimeTableInfo.demo, six: TimeTableInfo.demo, seven: TimeTableInfo.demo, eight: TimeTableInfo.demo, nine: TimeTableInfo.demo, ten: TimeTableInfo.demo, eleven: TimeTableInfo.demo, twelve: TimeTableInfo.demo, thirteen: TimeTableInfo.demo, fourteen: TimeTableInfo.demo, fifteen: TimeTableInfo.demo, sixteen: TimeTableInfo.demo, seventeen: TimeTableInfo.demo, eighteen: TimeTableInfo.demo, nineteen: TimeTableInfo.demo, twenty: TimeTableInfo.demo, twentyone: TimeTableInfo.demo, twentytwo: TimeTableInfo.demo, twentythree: TimeTableInfo.demo, twentyfour: TimeTableInfo.demo)
-}
-
-extension TimeTable {
-    static let demo = TimeTable(weekdays: TimeList.demo, saturdays: TimeList.demo, holidays: TimeList.demo)
-}

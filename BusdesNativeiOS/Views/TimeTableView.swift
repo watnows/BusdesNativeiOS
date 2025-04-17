@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TimeTableView: View{
-    @ObservedObject var viewModel: TimeTableViewModel
+    @ObservedObject var viewModel = TimeTableViewModel()
     @State var currentTab = 0
     @Namespace var namespace
     let hours = [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]

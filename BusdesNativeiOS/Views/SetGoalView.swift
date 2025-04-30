@@ -6,7 +6,7 @@ struct SetGoalView: View {
     @State private var selectedGoal = "南草津駅"
     @Binding var path: NavigationPath
     @State private var showAlert = false
-    @EnvironmentObject var userModel: UserSession
+    @EnvironmentObject var userModel: UserService
     let receivedBusStop: BusStopModel
 
     init(from: BusStopModel, path: Binding<NavigationPath>) {
@@ -17,15 +17,16 @@ struct SetGoalView: View {
 
     var body: some View {
         VStack {
+            Spacer()
             Text("どちらでバスを降りますか？")
                 .font(.headline)
             Text("乗り場：\(viewModel.from.name)")
                 .font(.headline)
-                .padding( .top, 100)
+                .padding( .top, 50)
             HStack {
                 Spacer()
                 Button {
-                    selectStaition.toggle()
+                    selectStaition = true
                     selectedGoal = "南草津駅"
                 } label: {
                     Text("南草津駅")
@@ -34,7 +35,7 @@ struct SetGoalView: View {
                 .disabled(selectStaition)
                 Spacer()
                 Button {
-                    selectStaition.toggle()
+                    selectStaition = false
                     selectedGoal = "立命館大学"
                 } label: {
                     Text("立命館大学")
@@ -43,6 +44,7 @@ struct SetGoalView: View {
                 .disabled(!selectStaition)
                 Spacer()
             }
+            .padding(.top, 50)
             Button {
                 if viewModel.from.name == selectedGoal {
                     showAlert.toggle()
@@ -61,7 +63,9 @@ struct SetGoalView: View {
                       dismissButton: .default(Text("OK"))
                 )
             }
+            Spacer()
         }
         .navigationTitle("My路線の追加")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

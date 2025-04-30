@@ -9,7 +9,7 @@ class SetGoalViewModel: ObservableObject {
         self.from = from
     }
 
-    func setRoute(to : String, userModel: UserSession) {
+    func setRoute(to : String, userModel: UserService) {
         userModel.addRoute(from: from.name, to: to)
     }
 }

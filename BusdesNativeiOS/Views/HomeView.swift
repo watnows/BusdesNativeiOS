@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @Binding var path: NavigationPath
-    @EnvironmentObject var userModel: UserSession
+    @EnvironmentObject var userModel: UserService
     @EnvironmentObject var viewModel: HomeViewModel
     
     var body: some View {
@@ -11,7 +11,7 @@ struct HomeView: View {
                 VStack {
                     Spacer()
                     Text("右下の「+」ボタンから\nよく使う路線を追加してください")
-                        .foregroundColor(.gray)
+                        .foregroundColor(.appGray)
                         .multilineTextAlignment(.center)
                         .padding()
                     Spacer()

@@ -6,13 +6,14 @@ protocol BusAPIServiceProtocol {
 }
 
 class BusAPIService: BusAPIServiceProtocol {
-    private let baseURLString = Constants.API.baseURL
-    private let session = URLSession.shared
-    private let decoder: JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
-    }()
+    private let session: URLSession
+    private let decoder: JSONDecoder
+    
+    init(session: URLSession = URLSession(configuration:  .default), decoder: JSONDecoder = .init()) {
+        self.session = session
+        self.decoder = decoder
+        self.decoder.keyDecodingStrategy = .convertFromSnakeCase
+    }
 
     func fetchNextBus(from: String, to: String) async throws -> ApproachInfo {
         guard let url = Constants.API.nextBusURL(from: from, to: to) else {
@@ -31,16 +32,31 @@ class BusAPIService: BusAPIServiceProtocol {
     private func performRequest<T: Decodable>(url: URL) async throws -> T {
         do {
             let (data, response) = try await session.data(from: url)
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                throw NetworkError.invalidResponse(statusCode: (response as? HTTPURLResponse)?.statusCode ?? 0)
+            print("Response: \(response)")
+            print("Data: \(String(data: data, encoding: .utf8) ?? "")")
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                 throw NetworkError.invalidResponse(statusCode: 0)
             }
+
+            guard (200...299).contains(httpResponse.statusCode) else {
+                throw NetworkError.invalidResponse(statusCode: httpResponse.statusCode)
+            }
+
+            guard !data.isEmpty else {
+                 throw NetworkError.noData
+            }
+
             return try decoder.decode(T.self, from: data)
-        } catch let error as NetworkError {
-            throw error
+        } catch let decodingError as DecodingError {
+
+             throw NetworkError.decodingError(decodingError)
         } catch let urlError as URLError {
              throw NetworkError.networkError(urlError)
+        } catch let networkError as NetworkError {
+             throw networkError
         } catch {
-            throw NetworkError.decodingError(error)
+             throw NetworkError.unknownError(error)
         }
     }
 }

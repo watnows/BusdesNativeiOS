@@ -1,35 +1,10 @@
 import Foundation
 import CoreData
 
-enum RouteRepositoryError: Error, LocalizedError {
-    case contextUnavailable
-    case fetchFailed(Error)
-    case saveFailed(Error)
-    case deleteFailed(Error)
-    case routeNotFound
-
-    var errorDescription: String? {
-        switch self {
-        case .contextUnavailable:
-            return "データベースコンテキストにアクセスできませんでした。"
-        case .fetchFailed(let error):
-            return "路線の読み込みに失敗しました: \(error.localizedDescription)"
-        case .saveFailed(let error):
-            return "路線の保存に失敗しました: \(error.localizedDescription)"
-        case .deleteFailed(let error):
-            return "路線の削除に失敗しました: \(error.localizedDescription)"
-        case .routeNotFound:
-            return "指定された路線が見つかりませんでした。"
-        }
-    }
-}
-
-
 protocol RouteRepositoryProtocol {
     @MainActor func fetchSavedRoutes() throws -> [Routes]
     func addRoute(from: String, to: String) async throws
     func deleteRoute(_ route: Routes) async throws
-    func deleteRoute(by objectID: NSManagedObjectID) async throws
 }
 
 class CoreDataRouteRepository: RouteRepositoryProtocol {
@@ -77,25 +52,15 @@ class CoreDataRouteRepository: RouteRepositoryProtocol {
 
     func deleteRoute(_ route: Routes) async throws {
         try await backgroundContext.perform { [weak self] in
-             guard let self = self else { throw RouteRepositoryError.contextUnavailable }
-             guard let backgroundRoute = self.backgroundContext.object(with: route.objectID) as? Routes else {
-                 throw RouteRepositoryError.routeNotFound
-             }
-             self.backgroundContext.delete(backgroundRoute)
-             try self.saveBackgroundContext()
+            guard let self = self else { throw RouteRepositoryError.contextUnavailable }
+            guard let routeToDelete = self.backgroundContext.object(with: route.objectID) as? Routes else {
+                return
+            }
+            self.backgroundContext.delete(routeToDelete)
+            try self.saveBackgroundContext()
         }
     }
 
-    func deleteRoute(by objectID: NSManagedObjectID) async throws {
-        try await backgroundContext.perform { [weak self] in
-             guard let self = self else { throw RouteRepositoryError.contextUnavailable }
-             guard let routeToDelete = self.backgroundContext.object(with: objectID) as? Routes else {
-                 return
-             }
-             self.backgroundContext.delete(routeToDelete)
-             try self.saveBackgroundContext()
-        }
-    }
     private func saveBackgroundContext() throws {
         guard backgroundContext.hasChanges else { return }
         do {

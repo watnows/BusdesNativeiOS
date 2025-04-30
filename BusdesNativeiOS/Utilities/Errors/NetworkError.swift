@@ -7,6 +7,7 @@ enum NetworkError: Error, LocalizedError {
     case noData
     case decodingError(Error)
     case encodingError
+    case unknownError(Error)
 
     var errorDescription: String? {
         switch self {
@@ -25,6 +26,8 @@ enum NetworkError: Error, LocalizedError {
             return "データの解析に失敗しました。"
         case .encodingError:
             return "リクエスト情報の作成に失敗しました。"
+        case .unknownError(let error):
+            return "不明なエラーが発生しました: \(error.localizedDescription)"
         }
     }
 
@@ -37,6 +40,8 @@ enum NetworkError: Error, LocalizedError {
              return "通信エラーが発生しました。\n時間をおいて再試行してください。"
         case .invalidResponse, .noData, .decodingError:
             return "データの取得に失敗しました。\n時間をおいて再試行してください。"
+        case .unknownError:
+            return "予期せぬエラーが発生しました。\nアプリを再起動してみてください。"
         default:
             return self.errorDescription ?? "不明なエラーが発生しました。"
         }

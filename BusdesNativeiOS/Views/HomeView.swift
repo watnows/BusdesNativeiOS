@@ -1,23 +1,57 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject var viewModel: HomeViewModel
     @Binding var path: NavigationPath
+    @EnvironmentObject var userModel: UserSession
+    @EnvironmentObject var viewModel: HomeViewModel
+    
     var body: some View {
-        ZStack {
-            if !viewModel.myRouteList.isEmpty {
-                ForEach(0 ..< viewModel.myRouteList.count, id: \.self) { index in
-                    HomeCardView(viewModel: viewModel, myRoute: MyRoute(from: viewModel.myRouteList[index].from, to: viewModel.myRouteList[index].to))
-                        .onAppear{
-                            Task {
-                                viewModel.fetchTimeTable(fr: viewModel.myRouteList[index].from, to: viewModel.myRouteList[index].to)
-                            }
-                        }
+        ZStack(alignment: .bottomTrailing) {
+            if userModel.savedRoutes.isEmpty {
+                VStack {
+                    Spacer()
+                    Text("右下の「+」ボタンから\nよく使う路線を追加してください")
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    Spacer()
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                Text("路線を追加してください")
+                List {
+                    ForEach(userModel.savedRoutes) { route in
+                        HomeCardView(routeEntity: route)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    userModel.deleteRoute(route)
+                                } label: {
+                                    Label("削除", systemImage: "trash.fill")
+                                }
+                            }
+                            .listRowSeparator(.hidden)
+                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                            .listRowBackground(Color.clear)
+                    }
+                }
+                .listStyle(.plain)
+                .refreshable {
+                    await Task {
+                        await viewModel.fetchAllTimeTables()
+                    }.value
+                }
             }
-            NavigationLink("+", value: "AddLine")
+            Button {
+                path.append(AppScreen.addLine)
+            } label: {
+                Image(systemName: "plus")
+                    .font(.title.weight(.semibold))
+                    .padding()
+                    .background(Color.appRed)
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+                    .shadow(color: .gray, radius: 3, x: 1, y: 1)
+            }
+            .padding()
         }
     }
 }

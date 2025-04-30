@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TimeTableView: View{
-    @ObservedObject var viewModel = TimeTableViewModel()
+    @StateObject var viewModel = TimeTableViewModel()
     @State var currentTab = 0
     @Namespace var namespace
     let hours = [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
@@ -15,7 +15,6 @@ struct TimeTableView: View{
                         tabItemView(string: name, tab: index)
                     })
                 }
-                .background(.white)
                 .frame(height: 48)
             }
             TabView(selection: $currentTab) {
@@ -28,7 +27,6 @@ struct TimeTableView: View{
                     }
                 }
                 .listStyle(.plain)
-                .ignoresSafeArea()
                 .tag(0)
                 List {
                     ForEach(hours, id: \.self) { hour in
@@ -39,15 +37,13 @@ struct TimeTableView: View{
                     }
                 }
                 .listStyle(.plain)
-                .ignoresSafeArea()
                 .tag(1)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
-        .onAppear {
-            if viewModel.timeTableToRits == nil {
-                print("fetch")
-                viewModel.fetchTimeTable()
+        .task {
+            if viewModel.timeTableToRits == nil && viewModel.timeTableFromRits == nil {
+                await viewModel.fetchTimeTable()
             }
         }
     }
@@ -61,9 +57,9 @@ extension TimeTableView {
             VStack {
                 Spacer()
                 Text(string)
-                    .foregroundColor(self.currentTab == tab ? .yellow : .black)
+                    .foregroundColor(self.currentTab == tab ? .appRed : .black)
                 if self.currentTab == tab {
-                    Color.yellow.frame(height: 3)
+                    Color.appRed.frame(height: 3)
                         .matchedGeometryEffect(id: "underline", in: namespace, properties: .frame)
                 } else {
                     Color.clear.frame(height: 3).padding(.horizontal, 15)

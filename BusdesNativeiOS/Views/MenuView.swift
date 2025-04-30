@@ -3,44 +3,22 @@ import SwiftUI
 struct MenuView: View {
     var body: some View {
         List {
-            Section {
-                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.feedback.pageURL)){
-                    HStack {
-                        Text(MenuItem.feedback.pageName)
-                            .foregroundStyle(.black)
-                    }
-                }
-                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.terms.pageURL)){
-                    HStack {
-                        Text(MenuItem.terms.pageName)
-                            .foregroundStyle(.black)
-                    }
-                }
-                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.twitter.pageURL)){
-                    HStack {
-                        Text(MenuItem.twitter.pageName)
-                            .foregroundStyle(.black)
-                    }
-                }
-            } header: {
-                Text("設定")
+            Section("設定") {
+                menuItemLink(for: .feedback)
+                menuItemLink(for: .terms)
+                menuItemLink(for: .twitter)
             }
-            Section {
-                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.schedule.pageURL)){
-                    HStack {
-                        Text(MenuItem.schedule.pageName)
-                            .foregroundStyle(.black)
-                    }
-                }
-                NavigationLink(destination: WebViewControllerRepresentable(url: MenuItem.timetable.pageURL)){
-                    HStack {
-                        Text(MenuItem.timetable.pageName)
-                            .foregroundStyle(.black)
-                    }
-                }
-            } header: {
-                Text("大学間シャトルバス")
+            Section("大学間シャトルバス") {
+                menuItemLink(for: .schedule)
+                menuItemLink(for: .timetable)
+                
             }
+        }
+    }
+    private func menuItemLink(for item: MenuItem) -> some View {
+        NavigationLink(value: AppScreen.webView(url: item.pageURL)) {
+            Text(item.pageName)
+                .foregroundStyle(.black)
         }
     }
 }

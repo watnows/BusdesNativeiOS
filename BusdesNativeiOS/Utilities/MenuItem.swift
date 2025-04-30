@@ -23,15 +23,15 @@ enum MenuItem {
     var pageURL: String {
         switch self {
         case .feedback:
-            return "https://forms.gle/wpq6MYUeWfisKDKQA"
+            return Constants.ExternalLinks.feedback
         case .terms:
-            return "https://ryota2425.github.io/"
+            return Constants.ExternalLinks.terms
         case .twitter:
-            return "https://twitter.com/busdes_rits"
+            return Constants.ExternalLinks.twitter
         case .schedule:
-            return "https://mercy34mercy.github.io/bustimer_kic/shuttle/schedule.jpg"
+            return Constants.ExternalLinks.schedule
         case .timetable:
-            return "https://mercy34mercy.github.io/bustimer_kic/shuttle/timetable.jpg"
+            return Constants.ExternalLinks.timetable
         }
     }
 }

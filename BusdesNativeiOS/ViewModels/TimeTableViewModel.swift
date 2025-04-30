@@ -1,60 +1,62 @@
 import Combine
 import Foundation
 
+@MainActor
 class TimeTableViewModel: ObservableObject {
     @Published var timeTableFromRits: TimeList?
     @Published var timeTableToRits: TimeList?
-    @Published var errorMessage: String?
+    @Published var errorMessage: NetworkError?
+    @Published var isLoading: Bool = false
 
-    func fetchTimeTable() {
+    func fetchTimeTable() async {
+        isLoading = true
         errorMessage = nil
 
-        fetchTimeTableData(fr: "立命館大学", to: "南草津駅") { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let timeTable):
-                    self?.timeTableFromRits = timeTable.weekdays
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
+        do {
+            async let fromRitsData = fetchTimeTableData(fr: "立命館大学", to: "南草津駅")
+            async let toRitsData = fetchTimeTableData(fr: "南草津駅", to: "立命館大学")
+
+            let results = try await (fromRits: fromRitsData, toRits: toRitsData)
+
+            self.timeTableFromRits = results.fromRits.weekdays
+            self.timeTableToRits = results.toRits.weekdays
+            // self.timeTableFromRits = results.fromRits // 全曜日データを使う場合
+            // self.timeTableToRits = results.toRits
+
+        } catch let error as NetworkError {
+            self.errorMessage = error
+        } catch {
+            self.errorMessage = .networkError(error)
         }
-        fetchTimeTableData(fr: "南草津駅", to: "立命館大学") { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let timeTable):
-                    self?.timeTableToRits = timeTable.weekdays
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
-        }
+
+        isLoading = false
     }
-    
-    func fetchTimeTableData(fr: String, to: String, completion: @escaping (Result<TimeTable, any Error>) -> Void) {
-        let urlString = "https://busdesrits.com/bus/timetable?fr=\(fr)&to=\(to)"
-        guard let url = URL(string: urlString) else {
-            completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
-            return
+
+    private func fetchTimeTableData(fr: String, to: String) async throws -> TimeTable {
+        guard let url = Constants.API.timeTableURL(from: fr, to: to) else {
+                throw NetworkError.invalidURL
+            }
+
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await URLSession.shared.data(from: url)
+        } catch {
+            throw NetworkError.networkError(error)
         }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No data", code: -1, userInfo: nil)))
-                return
-            }
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let timeTable = try decoder.decode(TimeTable.self, from: data)
-                completion(.success(timeTable))
-            } catch {
-                completion(.failure(error))
-            }
+
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+            throw NetworkError.invalidResponse(statusCode: statusCode)
         }
-        task.resume()
+
+        do {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let timeTable = try decoder.decode(TimeTable.self, from: data)
+            return timeTable
+        } catch {
+            throw NetworkError.decodingError(error)
+        }
     }
 }

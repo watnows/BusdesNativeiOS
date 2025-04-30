@@ -7,7 +7,7 @@ struct RoundedRedButton: ButtonStyle {
         configuration.label
             .frame(width: 130, height: 40)
             .foregroundColor(isSelected ? .white : .black)
-            .background(isSelected ? Color.appRed : Color.appGray)
+            .background(isSelected ? Color.appRed: Color.appGray)
             .opacity(configuration.isPressed ? 0.5 : 1.0)
             .clipShape(Capsule())
     }

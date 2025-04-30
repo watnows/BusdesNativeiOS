@@ -1,22 +1,15 @@
 import Combine
 import SwiftUI
 
+@MainActor
 class SetGoalViewModel: ObservableObject {
-    var from: String
-    var showAlert = false
-    
-    init(from: String, showAlert: Bool = false) {
+    let from: BusStopModel
+
+    init(from: BusStopModel) {
         self.from = from
-        self.showAlert = showAlert
     }
 
-    func setRoute(to: String) {
-        if from == to {
-            showAlert.toggle()
-        } else {
-            //保存機能書きたい！！
-            
-        }
-        print(from,to)
+    func setRoute(to : String, userModel: UserSession) {
+        userModel.addRoute(from: from.name, to: to)
     }
 }

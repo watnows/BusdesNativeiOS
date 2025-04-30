@@ -1,12 +1,10 @@
-// Constants.swift
 import Foundation
 
 struct Constants {
     struct API {
-        static let baseURL = "https://busdesrits.com/bus" // ベースURL
-        static let nextBusEndpoint = "/time/v3"           // V3接近情報
-        static let timeTableEndpoint = "/timetable"       // 時刻表
-        // 例: "https://busdesrits.com/bus/time/v3?fr=\(from)&to=\(to)"
+        static let baseURL = "https://busdesrits.com/bus"
+        static let nextBusEndpoint = "/time/v3"
+        static let timeTableEndpoint = "/timetable"
 
         static func nextBusURL(from: String, to: String) -> URL? {
             guard let encodedFr = from.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),

@@ -1,9 +1,11 @@
-// Custom Tab Bar Container View
+import SwiftUI
+
 struct CustomTabBar: View {
     @Binding var selectedTab: BaseView.Tab
-
+    
     var body: some View {
-        HStack(spacing: 0) { // Use spacing: 0 if buttons should touch
+        HStack(spacing: 0) {
+            Spacer()
             TabBarButton(
                 title: "Next bus",
                 icon: "deskclock",
@@ -12,7 +14,7 @@ struct CustomTabBar: View {
                     selectedTab = .home
                 }
             )
-
+            Spacer()
             TabBarButton(
                 title: "Timetable",
                 icon: "calendar.badge.clock",
@@ -21,10 +23,11 @@ struct CustomTabBar: View {
                     selectedTab = .timetable
                 }
             )
+            Spacer()
         }
-        .frame(height: 55) // Adjust height as needed, including safe area padding consideration
-        .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0 > 0 ? 15 : 0) // Add padding only if safe area exists
-        .background(Color(uiColor: .systemBackground)) // Background for the tab bar area
-        .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2) // Optional shadow
+        .padding(5)
+        .padding(.top, 10)
+        .background(Color.white)
+        .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
     }
 }

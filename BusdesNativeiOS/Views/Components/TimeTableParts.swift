@@ -10,17 +10,18 @@ struct TimeTableParts: View{
             VStack {
                 ForEach(0 ..< timeTableInfo.count, id: \.self) { index in
                     HStack {
-                        Text(timeTableInfo[index].min)
-                            .padding(.trailing, 15)
-                            .font(.system(.caption, design: .monospaced))
+                        Text("\(hour):\(timeTableInfo[index].min)")
+                            .padding(.trailing, 10)
+                            .font(.callout)
                         Text(timeTableInfo[index].via)
-                            .font(.system(.caption, design: .rounded))
+                            .font(.callout)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 45)
                 }
-                .listRowSeparatorTint(Color.white)
+                .listRowSeparatorTint(Color.appGray)
             }
         }
+        .foregroundColor(.black)
     }
 }

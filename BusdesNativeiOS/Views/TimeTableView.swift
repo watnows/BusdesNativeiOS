@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TimeTableView: View{
-    @StateObject var viewModel = TimeTableViewModel()
+    @StateObject var viewModel: TimeTableViewModel
     @State var currentTab = 0
     @Namespace var namespace
     let hours = [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
@@ -9,7 +9,6 @@ struct TimeTableView: View{
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Spacer()
                 HStack {
                     ForEach(Array(zip(self.goals.indices, self.goals)), id: \.0, content: { index, name in
                         tabItemView(string: name, tab: index)
@@ -57,14 +56,16 @@ extension TimeTableView {
             VStack {
                 Spacer()
                 Text(string)
-                    .foregroundColor(self.currentTab == tab ? .appRed : .black)
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
                 if self.currentTab == tab {
-                    Color.appRed.frame(height: 3)
+                    Color.white.frame(height: 3)
                         .matchedGeometryEffect(id: "underline", in: namespace, properties: .frame)
                 } else {
                     Color.clear.frame(height: 3).padding(.horizontal, 15)
                 }
-            }.animation(.spring(), value: currentTab)
+            }
+            .animation(.spring(), value: currentTab)
         }
         .buttonStyle(.plain)
     }

@@ -32,9 +32,6 @@ class BusAPIService: BusAPIServiceProtocol {
     private func performRequest<T: Decodable>(url: URL) async throws -> T {
         do {
             let (data, response) = try await session.data(from: url)
-            print("Response: \(response)")
-            print("Data: \(String(data: data, encoding: .utf8) ?? "")")
-
             guard let httpResponse = response as? HTTPURLResponse else {
                  throw NetworkError.invalidResponse(statusCode: 0)
             }

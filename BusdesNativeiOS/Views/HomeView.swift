@@ -5,8 +5,15 @@ struct HomeView: View {
     @EnvironmentObject var userModel: UserService
     @EnvironmentObject var viewModel: HomeViewModel
     
+    private let appBarHeight: CGFloat = UIScreen.main.bounds.height * 0.35
+    
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
+            GeometryReader { geometry in
+                CurvedRedBackground(height: appBarHeight)
+                    .fill(Color.appRed)
+                    .frame(height: appBarHeight)
+            }
             if userModel.savedRoutes.isEmpty {
                 VStack {
                     Spacer()
@@ -18,28 +25,28 @@ struct HomeView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                List {
-                    ForEach(userModel.savedRoutes) { route in
-                        HomeCardView(routeEntity: route)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                Button(role: .destructive) {
-                                    userModel.deleteRoute(route)
-                                } label: {
-                                    Label("削除", systemImage: "trash.fill")
+                    List {
+                        ForEach(userModel.savedRoutes) { route in
+                            HomeCardView(routeEntity: route)
+                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                    Button(role: .destructive) {
+                                        userModel.deleteRoute(route)
+                                    } label: {
+                                        Label("削除", systemImage: "trash.fill")
+                                    }
                                 }
-                            }
-                            .listRowSeparator(.hidden)
-                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                            .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
+                                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                                .listRowBackground(Color.clear)
+                        }
+                    }
+                    .listStyle(.plain)
+                    .refreshable {
+                        await Task {
+                            await viewModel.fetchAllTimeTables()
+                        }.value
                     }
                 }
-                .listStyle(.plain)
-                .refreshable {
-                    await Task {
-                        await viewModel.fetchAllTimeTables()
-                    }.value
-                }
-            }
             Button {
                 path.append(AppScreen.addLine)
             } label: {

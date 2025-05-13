@@ -29,7 +29,7 @@ struct BaseView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     CustomTabBar(selectedTab: $selectedTab)
                         .background(Color.white)
-                        .clipShape(.rect(topLeadingRadius: 75, topTrailingRadius: 75))
+//                        .clipShape(.rect(topLeadingRadius: 75, topTrailingRadius: 75))
                 }
             }
             .background(Color(uiColor: .secondarySystemBackground))

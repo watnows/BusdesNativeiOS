@@ -24,9 +24,11 @@ struct TimeTableView: View{
                             TimeTableParts(hour: hour, timeTableInfo: timeTableInfo)
                         }
                     }
+                    .listRowBackground(Color(uiColor: .secondarySystemBackground))
                 }
                 .listStyle(.plain)
                 .tag(0)
+                .background(Color(uiColor: .secondarySystemBackground))
                 List {
                     ForEach(hours, id: \.self) { hour in
                         let timeTableInfo = viewModel.timeTableFromRits?.timesForHour(hour) ?? []
@@ -34,9 +36,11 @@ struct TimeTableView: View{
                             TimeTableParts(hour: hour, timeTableInfo: timeTableInfo)
                         }
                     }
+                    .listRowBackground(Color(uiColor: .secondarySystemBackground))
                 }
                 .listStyle(.plain)
                 .tag(1)
+                .background(Color(uiColor: .secondarySystemBackground))
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }

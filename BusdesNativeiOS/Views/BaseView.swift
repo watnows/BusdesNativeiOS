@@ -4,6 +4,7 @@ struct BaseView: View {
     @State private var path = NavigationPath()
     @State private var selectedTab: Tab = .home
     @StateObject private var viewModel = TimeTableViewModel()
+    private let appBarHeight: CGFloat = UIScreen.main.bounds.height * 0.35
     
     enum Tab {
         case home
@@ -13,7 +14,8 @@ struct BaseView: View {
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
-                Color.appRed
+                CurvedRedBackground(height: appBarHeight)
+                    .fill(Color.appRed)
                     .ignoresSafeArea()
                 VStack(spacing: 0) {
                     Group {
@@ -24,10 +26,13 @@ struct BaseView: View {
                             TimeTableView(viewModel: viewModel)
                         }
                     }
-                    .frame(maxHeight: .infinity)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     CustomTabBar(selectedTab: $selectedTab)
+                        .background(Color.white)
+                        .clipShape(.rect(topLeadingRadius: 75, topTrailingRadius: 75))
                 }
             }
+            .background(Color(uiColor: .secondarySystemBackground))
             .toolbarColorScheme(.dark)
             .toolbarBackground(Color.appRed, for: .navigationBar)
             .toolbar {
@@ -51,8 +56,8 @@ struct BaseView: View {
                     AddLineView(path: $path)
                 case .menu:
                     MenuView()
-                case .webView(let url):
-                    WebViewControllerRepresentable(url: url)
+                case .webView(let url, let title):
+                    WebView(url: url, title: title)
                 }
             }
             .task {
@@ -62,5 +67,6 @@ struct BaseView: View {
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
+        .tint(.white)
     }
 }

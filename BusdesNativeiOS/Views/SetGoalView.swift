@@ -49,6 +49,9 @@ struct SetGoalView: View {
                 if viewModel.from.name == selectedGoal {
                     showAlert.toggle()
                     return
+                } else if userModel.isRouteSaved(from: viewModel.from.name, to: selectedGoal) {
+                    showAlert.toggle()
+                    return
                 }
                 viewModel.setRoute(to: selectedGoal, userModel: userModel)
                 path.removeLast(path.count)
@@ -59,13 +62,17 @@ struct SetGoalView: View {
             .padding(.top, 40)
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("設定エラー"),
-                      message: Text("乗り場と降り場が同じようです"),
+                      message: Text(viewModel.from.name == selectedGoal ? "乗り場と降り場が同じようです" : "既に登録済みのルートです"),
                       dismissButton: .default(Text("OK"))
                 )
             }
             Spacer()
         }
+        .toolbarColorScheme(.dark)
         .navigationTitle("My路線の追加")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarColorScheme(.dark)
+        .toolbarBackground(Color.appRed, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }

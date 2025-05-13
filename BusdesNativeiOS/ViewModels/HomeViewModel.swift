@@ -51,9 +51,9 @@ class HomeViewModel: ObservableObject {
 
         guard let date = dateFormatter.date(from: time),
               let arrivalDate = Calendar.current.date(byAdding: .minute, value: requiredTime, to: date) else {
-            return "--:--着"
+            return "--:--"
         }
-        return dateFormatter.string(from: arrivalDate) + "着"
+        return dateFormatter.string(from: arrivalDate)
     }
 
     func fetchTimeTable(for route: Routes) async {

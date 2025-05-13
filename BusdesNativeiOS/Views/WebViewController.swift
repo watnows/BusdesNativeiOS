@@ -76,6 +76,7 @@ extension WebViewController: WebVIewControllerProtocol {
         switch keyPath {
         case #keyPath(WKWebView.isLoading):
             if webView.isLoading {
+                progressView.tintColor = .systemBlue
                 progressView.alpha = 1.0
                 progressView.setProgress(0.1, animated: true)
             } else {
@@ -92,7 +93,6 @@ extension WebViewController: WebVIewControllerProtocol {
 
         case #keyPath(WKWebView.estimatedProgress):
             self.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
-
         default:
             break
         }

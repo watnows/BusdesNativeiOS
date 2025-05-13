@@ -22,8 +22,11 @@ struct AddLineView: View {
             viewModel.filterBusStops(with: viewModel.searchQuery)
         }
         .navigationDestination(for: BusStopModel.self) { busStop in
-             SetGoalView(from: busStop, path: $path)
+            SetGoalView(from: busStop, path: $path)
         }
         .navigationTitle("バス停を選択")
+        .toolbarColorScheme(.dark)
+        .toolbarBackground(Color.appRed, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }

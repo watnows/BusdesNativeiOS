@@ -21,6 +21,6 @@ struct TabBarButton: View {
         .frame(width: 150, height: 40)
         .foregroundColor(isSelected ? Color.white: Color.appRed)
         .background(isSelected ? Color.appRed: Color.clear)
-        .cornerRadius(50)
+        .clipShape(.rect(cornerRadius: 50))
     }
 }

@@ -97,4 +97,7 @@ class UserService: ObservableObject {
             }
         }
     }
+    func isRouteSaved(from: String, to: String) -> Bool {
+        return savedRoutes.contains { $0.from == from && $0.to == to }
+    }
 }

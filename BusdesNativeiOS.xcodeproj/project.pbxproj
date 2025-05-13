@@ -113,7 +113,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1630;
 			};
 			buildConfigurationList = 97A47B3277B2C8776A98EBDB /* Build configuration list for PBXProject "BusdesNativeiOS" */;
 			compatibilityVersion = "Xcode 11.0";
@@ -193,6 +193,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = H6WZ83BNAM;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -231,7 +232,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_BUILD_NUMBER = 1;
-				DEVELOPMENT_TEAM = H6WZ83BNAM;
 				INFOPLIST_FILE = BusdesNativeiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Busdes!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
@@ -284,6 +284,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = H6WZ83BNAM;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -315,7 +316,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_BUILD_NUMBER = 1;
-				DEVELOPMENT_TEAM = H6WZ83BNAM;
 				INFOPLIST_FILE = BusdesNativeiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Busdes!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";

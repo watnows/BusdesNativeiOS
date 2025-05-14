@@ -29,7 +29,7 @@ struct Constants {
         static let feedback = "https://forms.gle/wpq6MYUeWfisKDKQA"
         static let terms = "https://ryota2425.github.io/"
         static let twitter = "https://twitter.com/busdes_rits"
-        static let schedule = "https://mercy34mercy.github.io/bustimer_kic/shuttle/schedule.jpg"
-        static let timetable = "https://mercy34mercy.github.io/bustimer_kic/shuttle/timetable.jpg"
+        static let schedule = "https://www.ritsumei.ac.jp/file.jsp?id=650650"
+        static let timetable = "https://www.ritsumei.ac.jp/file.jsp?id=650649"
     }
 }

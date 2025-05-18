@@ -232,6 +232,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_BUILD_NUMBER = 1;
+				DEVELOPMENT_TEAM = H6WZ83BNAM;
 				INFOPLIST_FILE = BusdesNativeiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Busdes!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
@@ -241,7 +242,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 9.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = busdes.rits.jp;
+				PRODUCT_BUNDLE_IDENTIFIER = busdes.test.jp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -316,6 +317,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_BUILD_NUMBER = 1;
+				DEVELOPMENT_TEAM = H6WZ83BNAM;
 				INFOPLIST_FILE = BusdesNativeiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Busdes!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
@@ -325,7 +327,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 9.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = busdes.rits.jp;
+				PRODUCT_BUNDLE_IDENTIFIER = busdes.test.jp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

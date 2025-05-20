@@ -242,7 +242,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 9.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = busdes.test.jp;
+				PRODUCT_BUNDLE_IDENTIFIER = busdes.rits.jp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -327,7 +327,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 9.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = busdes.test.jp;
+				PRODUCT_BUNDLE_IDENTIFIER = busdes.rits.jp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

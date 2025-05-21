@@ -27,9 +27,9 @@ struct Constants {
 
     struct ExternalLinks {
         static let feedback = "https://forms.gle/wpq6MYUeWfisKDKQA"
-        static let terms = "https://ryota2425.github.io/"
+        static let terms =  "https://busdesrits.com/static"
         static let twitter = "https://twitter.com/busdes_rits"
-        static let schedule = "https://mercy34mercy.github.io/bustimer_kic/shuttle/schedule.jpg"
-        static let timetable = "https://mercy34mercy.github.io/bustimer_kic/shuttle/timetable.jpg"
+        static let schedule = "https://busdesrits.com/static/schedule.jpg"
+        static let timetable = "https://busdesrits.com/static/daiya.jpg"
     }
 }

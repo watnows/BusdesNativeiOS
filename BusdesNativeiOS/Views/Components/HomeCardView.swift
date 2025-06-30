@@ -135,3 +135,16 @@ struct HomeCardView: View {
         return false
     }
 }
+
+#Preview {
+    let context = PersistenceController.preview.container.viewContext
+    let route = Routes(context: context)
+//    route.from = "南草津駅"
+//    route.to = "立命館大学"
+    
+    let userService = UserService()
+    
+    HomeCardView(routeEntity: route)
+        .environmentObject(HomeViewModel(userModel: userService))
+        .padding()
+}

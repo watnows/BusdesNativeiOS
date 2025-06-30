@@ -76,4 +76,5 @@ struct BaseView: View {
     BaseView()
         .environmentObject(userService)
         .environmentObject(HomeViewModel(userModel: userService))
+        .environmentObject(AdService.shared)
 }

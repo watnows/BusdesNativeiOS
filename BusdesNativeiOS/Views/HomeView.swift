@@ -61,3 +61,10 @@ struct HomeView: View {
         }
     }
 }
+
+#Preview {
+    let userService = UserService()
+    HomeView(path: .constant(NavigationPath()))
+        .environmentObject(userService)
+        .environmentObject(HomeViewModel(userModel: userService))
+}

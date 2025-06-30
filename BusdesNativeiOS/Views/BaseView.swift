@@ -70,3 +70,10 @@ struct BaseView: View {
         .tint(.white)
     }
 }
+
+#Preview {
+    let userService = UserService()
+    BaseView()
+        .environmentObject(userService)
+        .environmentObject(HomeViewModel(userModel: userService))
+}

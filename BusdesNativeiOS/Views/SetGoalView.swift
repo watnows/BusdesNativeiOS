@@ -76,3 +76,10 @@ struct SetGoalView: View {
         .toolbarBackground(.visible, for: .navigationBar)
     }
 }
+
+#Preview {
+    NavigationView {
+        SetGoalView(from: BusStopModel(name: "南草津駅", kana: "みなみくさつえき"), path: .constant(NavigationPath()))
+            .environmentObject(UserService())
+    }
+}

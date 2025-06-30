@@ -30,3 +30,10 @@ struct AddLineView: View {
         .toolbarBackground(.visible, for: .navigationBar)
     }
 }
+
+#Preview {
+    NavigationView {
+        AddLineView(path: .constant(NavigationPath()))
+            .environmentObject(UserService())
+    }
+}

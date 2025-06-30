@@ -25,3 +25,9 @@ struct MenuView: View {
         }
     }
 }
+
+#Preview {
+    NavigationView {
+        MenuView()
+    }
+}

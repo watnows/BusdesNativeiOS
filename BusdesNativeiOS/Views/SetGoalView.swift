@@ -5,7 +5,11 @@ struct SetGoalView: View {
     @State private var viewModel: SetGoalViewModel
     @State private var selectStation = true
     @Binding var path: NavigationPath
-    @EnvironmentObject var userModel: UserService
+
+    // SwiftDataから既存路線を取得（重複チェック用）
+    @Query(sort: \Route.createdAt, order: .reverse) private var savedRoutes: [Route]
+    @Environment(\.modelContext) private var modelContext
+
     let receivedBusStop: BusStop
 
     init(from: BusStop, path: Binding<NavigationPath>) {
@@ -48,7 +52,11 @@ struct SetGoalView: View {
             .padding(.top, 50)
 
             Button {
-                if viewModel.setRoute(to: viewModel.state.selectedGoal, userModel: userModel) {
+                if viewModel.setRoute(
+                    to: viewModel.state.selectedGoal,
+                    modelContext: modelContext,
+                    existingRoutes: savedRoutes
+                ) {
                     // 成功した場合、ナビゲーションをリセット
                     path.removeLast(path.count)
                 }
@@ -78,10 +86,8 @@ struct SetGoalView: View {
 }
 
 #Preview {
-    let previewUserService = UserService(modelContext: ModelContext(try! ModelContainer(for: Route.self)))
-
     NavigationView {
         SetGoalView(from: BusStop(name: "南草津駅", kana: "みなみくさつえき"), path: .constant(NavigationPath()))
-            .environmentObject(previewUserService)
+            .modelContainer(for: Route.self, inMemory: true)
     }
 }

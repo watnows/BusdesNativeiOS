@@ -33,10 +33,8 @@ struct AddLineView: View {
 }
 
 #Preview {
-    let previewUserService = UserService(modelContext: ModelContext(try! ModelContainer(for: Route.self)))
-
     NavigationView {
         AddLineView(path: .constant(NavigationPath()))
-            .environmentObject(previewUserService)
+            .modelContainer(for: Route.self, inMemory: true)
     }
 }

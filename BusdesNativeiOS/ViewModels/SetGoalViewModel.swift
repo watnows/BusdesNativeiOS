@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 import Observation
 
 /// 目的地設定画面のViewModel
@@ -37,13 +38,14 @@ final class SetGoalViewModel {
         state.selectedGoal = destination
     }
 
-    /// 路線を設定
+    /// 路線を設定（SwiftData直接操作）
     /// - Parameters:
     ///   - to: 目的地
-    ///   - userModel: ユーザーサービス
+    ///   - modelContext: SwiftDataのModelContext
+    ///   - existingRoutes: 既存の路線リスト（重複チェック用）
     /// - Returns: 設定が成功したかどうか
     @discardableResult
-    func setRoute(to: String, userModel: UserService) -> Bool {
+    func setRoute(to: String, modelContext: ModelContext, existingRoutes: [Route]) -> Bool {
         state.loadingState.startLoading()
 
         // バリデーション: 乗り場と降り場が同じ
@@ -55,7 +57,7 @@ final class SetGoalViewModel {
         }
 
         // バリデーション: 既に登録済み
-        if userModel.isRouteSaved(from: from.name, to: to) {
+        if existingRoutes.contains(where: { $0.from == from.name && $0.to == to }) {
             state.alertMessage = "既に登録済みのルートです"
             state.showAlert = true
             state.loadingState.finishLoading()
@@ -63,9 +65,19 @@ final class SetGoalViewModel {
         }
 
         // 路線を追加
-        userModel.addRoute(from: from.name, to: to)
-        state.loadingState.finishLoading()
-        return true
+        let newRoute = Route(to: to, from: from.name)
+        modelContext.insert(newRoute)
+
+        do {
+            try modelContext.save()
+            state.loadingState.finishLoading()
+            return true
+        } catch {
+            state.alertMessage = "路線の追加に失敗しました: \(error.localizedDescription)"
+            state.showAlert = true
+            state.loadingState.finishLoading()
+            return false
+        }
     }
 
     /// アラートを閉じる

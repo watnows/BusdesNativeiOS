@@ -6,9 +6,9 @@ class AddLineViewModel: ObservableObject {
     @Published var searchQuery: String = ""
     @Published var filteredData: [BusStop] = []
     private var busStops: [BusStop] = []
-    private let busStopRepository: BusStopRepositoryProtocol
-    
-    init(busStopRepository: BusStopRepositoryProtocol = LocalBusStopRepository()) {
+    private let busStopRepository: BusStopRepository
+
+    init(busStopRepository: BusStopRepository = BusStopRepository.shared) {
         self.busStopRepository = busStopRepository
         loadBusStops()
         self.filteredData = busStops

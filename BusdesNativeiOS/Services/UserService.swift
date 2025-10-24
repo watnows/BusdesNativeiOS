@@ -25,32 +25,29 @@ class UserService: ObservableObject {
         }
     }
     
+    /// 新しい路線を追加
     func addRoute(from: String, to: String) {
-        Task {
-            do {
-                try routeRepositoryImpl.saveRoute(from: from, to: to)
-                loadRoutes()
-                self.lastError = nil
-            } catch {
-                self.lastError = "路線の追加に失敗しました: \(error.localizedDescription)"
-                loadRoutes()
-            }
+        do {
+            try routeRepositoryImpl.saveRoute(from: from, to: to)
+            loadRoutes()
+            self.lastError = nil
+        } catch {
+            self.lastError = "路線の追加に失敗しました: \(error.localizedDescription)"
         }
     }
-    
+
+    /// 路線を削除（単一）
     func deleteRoute(_ route: Route) {
-        Task {
-            do {
-                try routeRepositoryImpl.deleteRoute(route)
-                loadRoutes()
-                self.lastError = nil
-            } catch {
-                self.lastError = "路線の削除に失敗しました: \(error.localizedDescription)"
-                loadRoutes()
-            }
+        do {
+            try routeRepositoryImpl.deleteRoute(route)
+            loadRoutes()
+            self.lastError = nil
+        } catch {
+            self.lastError = "路線の削除に失敗しました: \(error.localizedDescription)"
         }
     }
-    
+
+    /// 路線を複数削除（IndexSet指定）
     func deleteRoutes(at offsets: IndexSet) {
         let routesToDelete = offsets.compactMap { index -> Route? in
             guard savedRoutes.indices.contains(index) else { return nil }
@@ -59,26 +56,24 @@ class UserService: ObservableObject {
 
         guard !routesToDelete.isEmpty else { return }
 
-        Task {
-            var firstEncounteredError: Error? = nil
+        var firstEncounteredError: Error? = nil
 
-            for route in routesToDelete {
-                do {
-                    try routeRepositoryImpl.deleteRoute(route)
-                } catch {
-                    if firstEncounteredError == nil {
-                        firstEncounteredError = error
-                    }
+        for route in routesToDelete {
+            do {
+                try routeRepositoryImpl.deleteRoute(route)
+            } catch {
+                if firstEncounteredError == nil {
+                    firstEncounteredError = error
                 }
             }
+        }
 
-            loadRoutes()
+        loadRoutes()
 
-            if let error = firstEncounteredError {
-                self.lastError = "路線の削除に失敗しました: \(error.localizedDescription)"
-            } else {
-                self.lastError = nil
-            }
+        if let error = firstEncounteredError {
+            self.lastError = "路線の削除に失敗しました: \(error.localizedDescription)"
+        } else {
+            self.lastError = nil
         }
     }
     func isRouteSaved(from: String, to: String) -> Bool {

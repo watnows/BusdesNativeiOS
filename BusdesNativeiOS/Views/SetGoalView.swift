@@ -7,7 +7,7 @@ struct SetGoalView: View {
     @Binding var path: NavigationPath
 
     // SwiftDataから既存路線を取得（重複チェック用）
-    @Query(sort: \Route.createdAt, order: .reverse) private var savedRoutes: [Route]
+    @Query private var savedRoutes: [Route]
     @Environment(\.modelContext) private var modelContext
 
     let receivedBusStop: BusStop

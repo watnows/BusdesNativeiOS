@@ -16,15 +16,26 @@ struct CountdownService {
     /// 次のバス到着までのカウントダウン文字列を計算
     /// - Parameters:
     ///   - infos: 接近情報の配列
+    ///   - selectedIndex: 選択されたバスのインデックス（nilの場合は最も早いバスを自動選択）
     /// - Returns: カウントダウン文字列（例: "00:15:30", "出発", "終了"）
-    func calculateCountdown(for infos: [NextBus]) -> String {
-        guard let nextBusTime = findNextBusTime(from: infos) else {
+    func calculateCountdown(for infos: [NextBus], selectedIndex: Int? = nil) -> String {
+        let nextBusTime: Date?
+
+        if let index = selectedIndex {
+            // 選択されたバスのカウントダウンを計算
+            nextBusTime = findBusTime(at: index, from: infos)
+        } else {
+            // デフォルト: 最も早いバスを自動選択
+            nextBusTime = findNextBusTime(from: infos)
+        }
+
+        guard let busTime = nextBusTime else {
             return "終了"
         }
 
         let now = Date()
         let calendar = Calendar.current
-        let diff = calendar.dateComponents([.hour, .minute, .second], from: now, to: nextBusTime)
+        let diff = calendar.dateComponents([.hour, .minute, .second], from: now, to: busTime)
 
         guard let hour = diff.hour, let minute = diff.minute, let second = diff.second,
               hour >= 0, minute >= 0, second >= 0 else {
@@ -55,6 +66,27 @@ struct CountdownService {
     }
 
     // MARK: - Private Methods
+
+    /// 指定されたインデックスのバスの時刻を取得
+    private func findBusTime(at index: Int, from infos: [NextBus]) -> Date? {
+        guard index >= 0 && index < infos.count else {
+            return nil
+        }
+
+        let info = infos[index]
+        let now = Date()
+        let calendar = Calendar.current
+        let formatter = createDateFormatter()
+        let nowComponents = calendar.dateComponents([.year, .month, .day], from: now)
+
+        return parseNextBusDateTime(
+            info.realArrivalTime,
+            nowComponents: nowComponents,
+            formatter: formatter,
+            calendar: calendar,
+            now: now
+        )
+    }
 
     /// 次に到着するバスの時刻を検索
     private func findNextBusTime(from infos: [NextBus]) -> Date? {

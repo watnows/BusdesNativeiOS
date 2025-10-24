@@ -3,14 +3,13 @@ import SwiftUI
 struct BaseView: View {
     @State private var path = NavigationPath()
     @State private var selectedTab: Tab = .home
-    @StateObject private var viewModel = TimeTableViewModel()
     private let appBarHeight: CGFloat = UIScreen.main.bounds.height * 0.35
-    
+
     enum Tab {
         case home
         case timetable
     }
-    
+
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
@@ -23,7 +22,7 @@ struct BaseView: View {
                         case .home:
                             HomeView(path: $path)
                         case .timetable:
-                            TimeTableView(viewModel: viewModel)
+                            TimeTableView()
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -58,11 +57,6 @@ struct BaseView: View {
                     MenuView()
                 case .webView(let url, let title):
                     WebView(url: url, title: title)
-                }
-            }
-            .task {
-                if viewModel.timeTableToRits == nil && viewModel.timeTableFromRits == nil {
-                    await viewModel.fetchTimeTable()
                 }
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)

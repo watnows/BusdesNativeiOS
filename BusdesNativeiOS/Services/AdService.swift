@@ -1,32 +1,39 @@
 import Foundation
 import UIKit
 import GoogleMobileAds
+import Observation
+import os.log
 
-class AdService: ObservableObject {
+/// 広告サービス
+/// Google Mobile Ads SDKの初期化とバナー広告管理
+@MainActor
+@Observable
+final class AdService {
     static let shared = AdService()
-    
-    // 本番用バナー広告ユニットID（ここにあなたの本番IDを入力してください）
-    private let bannerAdUnitID = "ca-app-pub-6863317449275676/4414444576" // 本番用ID
-    
-    @Published var isInitialized = false
-    @Published var bannerAd: BannerView?
-    
+
+    // 本番用バナー広告ユニットID
+    private let bannerAdUnitID = "ca-app-pub-6863317449275676/4414444576"
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.busdes", category: "AdService")
+
+    var isInitialized = false
+    var bannerAd: BannerView?
+
     private init() {}
-    
-    // Google広告の初期化
+
+    /// Google広告の初期化
     func initialize() {
         MobileAds.shared.start { [weak self] status in
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 self?.isInitialized = true
-                print("Google Mobile Ads SDK initialized successfully")
+                self?.logger.info("Google Mobile Ads SDK initialized successfully")
             }
         }
     }
-    
-    // バナー広告の作成
+
+    /// バナー広告の作成
     func createBannerAd() -> BannerView {
         let bannerView = BannerView(adSize: AdSizeBanner)
-        bannerView.adUnitID = bannerAdUnitID // 本番IDを使用
+        bannerView.adUnitID = bannerAdUnitID
         bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
         bannerView.load(Request())
         return bannerView

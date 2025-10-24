@@ -69,6 +69,18 @@ struct HomeCardView: View {
         .padding(.vertical)
         .background(.white)
         .clipShape(.rect(cornerRadius: 12))
+        .onChange(of: viewModel.selectedBusIndices[routeID]) { oldValue, newValue in
+            // ViewModelの選択インデックスがリセットされた（nilになった）場合、Viewも0に戻す
+            if newValue == nil {
+                selectedInfo = 0
+            }
+        }
+        .onChange(of: busInfos.count) { oldValue, newValue in
+            // バス情報の数が変わった時、選択インデックスが範囲外にならないように調整
+            if selectedInfo >= newValue && newValue > 0 {
+                selectedInfo = newValue - 1  // 最後のバスを選択
+            }
+        }
     }
 
     private var countdownColor: Color {
@@ -111,7 +123,9 @@ struct HomeCardView: View {
     
     private func busInfoListView(infos: [NextBus]) -> some View {
         VStack(alignment: .center, spacing: 6) {
-            let currentInfo = infos[selectedInfo]
+            // 選択インデックスの範囲チェック（配列外アクセス防止）
+            let safeIndex = min(selectedInfo, infos.count - 1)
+            let currentInfo = infos[safeIndex]
             Text("\(currentInfo.via) \(currentInfo.busStop)番乗り場")
                 .font(.subheadline)
                 .foregroundColor(.primary)
@@ -125,6 +139,7 @@ struct HomeCardView: View {
                             .lineLimit(1)
                     .onTapGesture {
                         self.selectedInfo = index
+                        viewModel.selectBus(at: index, for: routeID)
                     }
                 }
             }

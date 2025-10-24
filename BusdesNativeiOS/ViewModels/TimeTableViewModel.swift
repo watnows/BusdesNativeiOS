@@ -1,16 +1,30 @@
-import Combine
 import Foundation
+import Observation
 
+/// 時刻表画面のViewModel
+/// @Observableパターンで状態管理を簡素化
 @MainActor
-class TimeTableViewModel: ObservableObject {
-    @Published var timeTableFromRits: TimeList?
-    @Published var timeTableToRits: TimeList?
-    @Published var errorMessage: NetworkError?
-    @Published var isLoading: Bool = false
+@Observable
+final class TimeTableViewModel {
 
+    // MARK: - State
+
+    /// 画面の状態を1つの構造体で管理
+    struct State {
+        var timeTableFromRits: TimeList?
+        var timeTableToRits: TimeList?
+        var errorMessage: NetworkError?
+        var isLoading: Bool = false
+    }
+
+    var state = State()
+
+    // MARK: - Public Methods
+
+    /// 時刻表データを取得
     func fetchTimeTable() async {
-        isLoading = true
-        errorMessage = nil
+        state.isLoading = true
+        state.errorMessage = nil
 
         do {
             async let fromRitsData = fetchTimeTableData(fr: "立命館大学", to: "南草津駅")
@@ -18,19 +32,21 @@ class TimeTableViewModel: ObservableObject {
 
             let results = try await (fromRits: fromRitsData, toRits: toRitsData)
 
-            self.timeTableFromRits = results.fromRits.weekdays
-            self.timeTableToRits = results.toRits.weekdays
-            // self.timeTableFromRits = results.fromRits // 全曜日データを使う場合
-            // self.timeTableToRits = results.toRits
+            state.timeTableFromRits = results.fromRits.weekdays
+            state.timeTableToRits = results.toRits.weekdays
+            // state.timeTableFromRits = results.fromRits // 全曜日データを使う場合
+            // state.timeTableToRits = results.toRits
 
         } catch let error as NetworkError {
-            self.errorMessage = error
+            state.errorMessage = error
         } catch {
-            self.errorMessage = .networkError(error)
+            state.errorMessage = .networkError(error)
         }
 
-        isLoading = false
+        state.isLoading = false
     }
+
+    // MARK: - Private Methods
 
     private func fetchTimeTableData(fr: String, to: String) async throws -> TimeTable {
         guard let url = Constants.API.timeTableURL(from: fr, to: to) else {

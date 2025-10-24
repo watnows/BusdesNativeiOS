@@ -12,8 +12,10 @@ struct BusdesNativeiOSApp: App {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             // スキーマ変更エラーの場合、データを削除して再作成
+            #if DEBUG
             print("⚠️ SwiftData migration error: \(error)")
             print("🔄 Clearing old data and creating new container...")
+            #endif
 
             // 既存のデータベースファイルを削除
             let url = URL.applicationSupportDirectory.appending(path: "default.store")

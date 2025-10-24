@@ -4,8 +4,8 @@ import Foundation
 @MainActor
 class AddLineViewModel: ObservableObject {
     @Published var searchQuery: String = ""
-    @Published var filteredData: [BusStopModel] = []
-    private var busStops: [BusStopModel] = []
+    @Published var filteredData: [BusStop] = []
+    private var busStops: [BusStop] = []
     private let busStopRepository: BusStopRepositoryProtocol
     
     init(busStopRepository: BusStopRepositoryProtocol = LocalBusStopRepository()) {

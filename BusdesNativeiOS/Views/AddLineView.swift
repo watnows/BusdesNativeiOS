@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct AddLineView: View {
     @StateObject var viewModel = AddLineViewModel()
@@ -21,7 +22,7 @@ struct AddLineView: View {
         .onChange(of: viewModel.searchQuery) {
             viewModel.filterBusStops(with: viewModel.searchQuery)
         }
-        .navigationDestination(for: BusStopModel.self) { busStop in
+        .navigationDestination(for: BusStop.self) { busStop in
             SetGoalView(from: busStop, path: $path)
         }
         .navigationTitle("バス停を選択")
@@ -32,8 +33,10 @@ struct AddLineView: View {
 }
 
 #Preview {
+    let previewUserService = UserService(modelContext: ModelContext(try! ModelContainer(for: Route.self)))
+
     NavigationView {
         AddLineView(path: .constant(NavigationPath()))
-            .environmentObject(UserService())
+            .environmentObject(previewUserService)
     }
 }

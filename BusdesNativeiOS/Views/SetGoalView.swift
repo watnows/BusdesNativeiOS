@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct SetGoalView: View {
     @StateObject private var viewModel: SetGoalViewModel
@@ -7,9 +8,9 @@ struct SetGoalView: View {
     @Binding var path: NavigationPath
     @State private var showAlert = false
     @EnvironmentObject var userModel: UserService
-    let receivedBusStop: BusStopModel
+    let receivedBusStop: BusStop
 
-    init(from: BusStopModel, path: Binding<NavigationPath>) {
+    init(from: BusStop, path: Binding<NavigationPath>) {
         self.receivedBusStop = from
         self._path = path
         _viewModel = StateObject(wrappedValue: SetGoalViewModel(from: from))
@@ -78,8 +79,10 @@ struct SetGoalView: View {
 }
 
 #Preview {
+    let previewUserService = UserService(modelContext: ModelContext(try! ModelContainer(for: Route.self)))
+
     NavigationView {
-        SetGoalView(from: BusStopModel(name: "南草津駅", kana: "みなみくさつえき"), path: .constant(NavigationPath()))
-            .environmentObject(UserService())
+        SetGoalView(from: BusStop(name: "南草津駅", kana: "みなみくさつえき"), path: .constant(NavigationPath()))
+            .environmentObject(previewUserService)
     }
 }

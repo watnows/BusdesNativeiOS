@@ -1,16 +1,16 @@
 import Foundation
 
-struct NextBusModel: Codable, Identifiable, Hashable  {
-    var id: UUID = UUID()
+struct NextBus: Codable {
+    let id: UUID = UUID()
     let moreMin: String
-    var realArrivalTime: String
+    let realArrivalTime: String
     let direction: String
     let via: String
     let scheduledTime: String
     let delay: String
     let busStop: String
     let requiredTime: Int
-    
+
     enum CodingKeys: String, CodingKey {
         case moreMin
         case realArrivalTime
@@ -21,8 +21,4 @@ struct NextBusModel: Codable, Identifiable, Hashable  {
         case busStop
         case requiredTime
     }
-}
-
-struct ApproachInfo: Codable {
-    var approachInfos: [NextBusModel]
 }

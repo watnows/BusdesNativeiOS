@@ -1,9 +1,9 @@
 import Foundation
 
 struct TimeTable: Codable {
-    var weekdays: TimeList
-    var saturdays: TimeList
-    var holidays: TimeList
+    let weekdays: TimeList
+    let saturdays: TimeList
+    let holidays: TimeList
 }
 
 struct TimeTableInfo: Codable {

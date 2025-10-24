@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7D96A946ABA4704A2EA84F32 /* BusdesNativeiOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1529509ABA3468ABCFACF064 /* BusdesNativeiOS.xcdatamodeld */; };
 		8C4C483D2E12F2C500CB0346 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 8C4C483C2E12F2C500CB0346 /* GoogleMobileAds */; };
 		DE4AAC3C9F63A3B5F3C2171D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C01B753F05B3584CFE61D32E /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -16,10 +15,10 @@
 		89B3160AD9D3F2EDE1828C63 /* BusdesNativeiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusdesNativeiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C6D8371453AB2499855EB38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C01B753F05B3584CFE61D32E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F57E2C484A0B2F3420A862CB /* BusdesNativeiOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BusdesNativeiOS.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		8CF03AD02E77E03E0050E6C0 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = App; sourceTree = "<group>"; };
 		BF2712312DC1E9CF00972F13 /* Application */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Application; sourceTree = "<group>"; };
 		BF2712332DC1EA1100972F13 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 		BF2712352DC1EA5100972F13 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
@@ -45,9 +44,9 @@
 		1E0FFD14EB8DF9D15FFBDDBD /* BusdesNativeiOS */ = {
 			isa = PBXGroup;
 			children = (
+				8CF03AD02E77E03E0050E6C0 /* App */,
 				BF2712312DC1E9CF00972F13 /* Application */,
 				C01B753F05B3584CFE61D32E /* Assets.xcassets */,
-				1529509ABA3468ABCFACF064 /* BusdesNativeiOS.xcdatamodeld */,
 				8C6D8371453AB2499855EB38 /* Info.plist */,
 				BF2712332DC1EA1100972F13 /* Models */,
 				BF2712382DC1EA8900972F13 /* Repositories */,
@@ -92,6 +91,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				8CF03AD02E77E03E0050E6C0 /* App */,
 				BF2712312DC1E9CF00972F13 /* Application */,
 				BF2712332DC1EA1100972F13 /* Models */,
 				BF2712352DC1EA5100972F13 /* Views */,
@@ -154,7 +154,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D96A946ABA4704A2EA84F32 /* BusdesNativeiOS.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,19 +378,6 @@
 			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		1529509ABA3468ABCFACF064 /* BusdesNativeiOS.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				F57E2C484A0B2F3420A862CB /* BusdesNativeiOS.xcdatamodel */,
-			);
-			currentVersion = F57E2C484A0B2F3420A862CB /* BusdesNativeiOS.xcdatamodel */;
-			path = BusdesNativeiOS.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = B5CB44FBE37E99D75DFE4693 /* Project object */;
 }

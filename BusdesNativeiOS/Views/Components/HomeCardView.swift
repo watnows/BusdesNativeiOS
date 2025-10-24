@@ -95,14 +95,36 @@ struct HomeCardView: View {
     }
     
     private func errorView(_ error: NetworkError) -> some View {
-        VStack{
+        VStack(spacing: 8) {
             Image(systemName: "exclamationmark.circle")
                 .foregroundColor(.red)
+                .font(.title2)
             Text(error.displayMessage)
                 .font(.footnote)
                 .foregroundColor(.red)
                 .multilineTextAlignment(.center)
+
+            // リトライ可能なエラーの場合、リトライボタンを表示
+            if error.isRetryable {
+                Button(action: {
+                    Task {
+                        await viewModel.retryFetchTimeTable(for: routeEntity)
+                    }
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.clockwise")
+                        Text("再試行")
+                    }
+                    .font(.caption)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color.appRed)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                }
+            }
         }
+        .padding(.vertical, 8)
     }
     
     private var loadingView: some View {

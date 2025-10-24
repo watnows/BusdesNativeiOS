@@ -41,6 +41,11 @@ final class TimerService {
     // MARK: - Lifecycle
 
     deinit {
-        stopTimer()
+        // deinitは非同期コンテキストで実行されるため、
+        // メインアクター分離されたメソッドを直接呼べない
+        // 代わりに、タイマーを直接invalidateする
+        timer?.invalidate()
+        timer = nil
+        updateAction = nil
     }
 }

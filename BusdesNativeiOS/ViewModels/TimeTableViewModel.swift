@@ -21,7 +21,10 @@ final class TimeTableViewModel {
 
     // MARK: - Public Methods
 
-    /// 時刻表データを取得
+    /// 立命館大学⇔南草津駅の時刻表データを並行取得
+    ///
+    /// 両方向の時刻表を同時に取得し、平日ダイヤのみを表示用に設定する
+    /// エラー発生時は`state.errorMessage`に詳細を格納
     func fetchTimeTable() async {
         state.isLoading = true
         state.errorMessage = nil
@@ -48,6 +51,12 @@ final class TimeTableViewModel {
 
     // MARK: - Private Methods
 
+    /// 指定された路線の時刻表データを取得
+    /// - Parameters:
+    ///   - fr: 出発地バス停名
+    ///   - to: 目的地バス停名
+    /// - Returns: 取得した時刻表データ
+    /// - Throws: `NetworkError` API通信・デコードエラー
     private func fetchTimeTableData(fr: String, to: String) async throws -> TimeTable {
         guard let url = Constants.API.timeTableURL(from: fr, to: to) else {
                 throw NetworkError.invalidURL

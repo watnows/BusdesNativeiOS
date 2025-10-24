@@ -25,14 +25,21 @@ final class AddLineViewModel {
 
     // MARK: - Initialization
 
+    /// イニシャライザ
+    /// - Parameter busStopRepository: バス停データリポジトリ（テスト用にカスタマイズ可能）
+    ///
+    /// 初期化時に自動的にバス停データを読み込む
     init(busStopRepository: BusStopRepository = BusStopRepository.shared) {
         self.busStopRepository = busStopRepository
         loadBusStops()
     }
 
-    // MARK: - Public Methods
+    // MARK: - Private Methods
 
-    /// バス停一覧を読み込む
+    /// バス停一覧をJSONファイルから読み込む
+    ///
+    /// 読み込み成功時は全バス停を`filteredData`に設定
+    /// 失敗時はエラーメッセージを`loadingState`に格納
     private func loadBusStops() {
         state.loadingState.startLoading()
 
@@ -47,8 +54,12 @@ final class AddLineViewModel {
         }
     }
 
+    // MARK: - Public Methods
+
     /// 検索クエリでバス停をフィルタリング
-    /// - Parameter query: 検索文字列
+    /// - Parameter query: 検索文字列（バス停名・かな名の部分一致で検索）
+    ///
+    /// クエリが空の場合は全バス停を表示
     func filterBusStops(with query: String) {
         state.searchQuery = query
 

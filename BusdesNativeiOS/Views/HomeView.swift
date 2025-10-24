@@ -31,6 +31,8 @@ struct HomeView: View {
                         onDelete: deleteRoute
                     )
                     .refreshable {
+                        // バス情報更新時に選択をリセット（常に最初のバスに戻る）
+                        viewModel.resetAllSelections()
                         await viewModel.fetchAllTimeTables(for: savedRoutes)
                     }
                 }

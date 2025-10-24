@@ -15,6 +15,9 @@ final class HomeViewModel {
     /// カウントダウン文字列（路線ID → カウントダウン表示）
     var countdowns: [UUID: String] = [:]
 
+    /// 選択されたバスのインデックス（路線ID → バスインデックス）
+    var selectedBusIndices: [UUID: Int] = [:]
+
     /// エラーメッセージ（路線ID → エラー）
     var errorMessages: [UUID: NetworkError?] = [:]
 
@@ -53,6 +56,7 @@ final class HomeViewModel {
         timeTables = timeTables.filter { routeIds.contains($0.key) }
         errorMessages = errorMessages.filter { routeIds.contains($0.key) }
         countdowns = countdowns.filter { routeIds.contains($0.key) }
+        selectedBusIndices = selectedBusIndices.filter { routeIds.contains($0.key) }
 
         // 新しい路線のバス情報を取得
         await fetchAllTimeTables(for: routes)
@@ -65,6 +69,25 @@ final class HomeViewModel {
     /// - Returns: 到着時刻文字列
     func parseTime(time: String, requiredTime: Int) -> String {
         return countdownService.parseTime(time: time, requiredTime: requiredTime)
+    }
+
+    /// 選択されたバスを変更
+    /// - Parameters:
+    ///   - index: 選択するバスのインデックス
+    ///   - routeID: 路線ID
+    func selectBus(at index: Int, for routeID: UUID) {
+        selectedBusIndices[routeID] = index
+
+        // 即座にカウントダウンを再計算
+        if let infos = timeTables[routeID] {
+            updateCountdown(for: routeID, with: infos)
+        }
+    }
+
+    /// 全路線の選択インデックスをリセット
+    /// プルリフレッシュ時などに使用
+    func resetAllSelections() {
+        selectedBusIndices.removeAll()
     }
 
     // MARK: - Private Methods
@@ -131,6 +154,7 @@ final class HomeViewModel {
     ///   - routeID: 路線ID
     ///   - infos: バス情報リスト
     private func updateCountdown(for routeID: UUID, with infos: [NextBus]) {
-        countdowns[routeID] = countdownService.calculateCountdown(for: infos)
+        let selectedIndex = selectedBusIndices[routeID]
+        countdowns[routeID] = countdownService.calculateCountdown(for: infos, selectedIndex: selectedIndex)
     }
 }

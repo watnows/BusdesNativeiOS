@@ -76,13 +76,17 @@ struct HomeView: View {
 
 /// 路線が空の時の表示
 private struct EmptyRouteView: View {
+    @ScaledMetric private var fontSize: CGFloat = 16
+
     var body: some View {
         VStack {
             Spacer()
             Text("右下の「+」ボタンから\nよく使う路線を追加してください")
+                .font(.system(size: fontSize))
                 .foregroundColor(.appGray)
                 .multilineTextAlignment(.center)
                 .padding()
+                .accessibilityLabel("路線が登録されていません。右下の追加ボタンから、よく使う路線を追加してください")
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -106,12 +110,14 @@ private struct RouteListView: View {
                             Label("削除", systemImage: "trash.fill")
                         }
                         .tint(.red)
+                        .accessibilityLabel("\(route.from)から\(route.to)への路線を削除")
                     }
                     .listRowSpacing(30)
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
                     .listRowBackground(Color.clear)
                     .opacity(0.9)
+                    .accessibilityElement(children: .combine)
             }
         }
         .shadow(radius: 1)
@@ -122,6 +128,7 @@ private struct RouteListView: View {
 /// 路線追加ボタン
 private struct AddRouteButton: View {
     @Binding var path: NavigationPath
+    @ScaledMetric private var buttonSize: CGFloat = 60
 
     var body: some View {
         Button {
@@ -135,7 +142,10 @@ private struct AddRouteButton: View {
                 .clipShape(Circle())
                 .shadow(color: .gray, radius: 3, x: 1, y: 1)
         }
+        .frame(width: buttonSize, height: buttonSize)
         .padding()
+        .accessibilityLabel("新しい路線を追加")
+        .accessibilityHint("タップして出発地と目的地を選択")
     }
 }
 

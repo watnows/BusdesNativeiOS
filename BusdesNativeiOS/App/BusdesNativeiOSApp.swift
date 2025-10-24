@@ -4,12 +4,29 @@ import SwiftData
 @main
 struct BusdesNativeiOSApp: App {
 
-    // SwiftDataコンテナ
+    // SwiftDataコンテナ（スキーマ変更対応）
     let container = {
+        let schema = Schema([Route.self])
+        let modelConfiguration = ModelConfiguration(schema, schema: true)
+
         do {
-            return try ModelContainer(for: Route.self)
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
-            fatalError("Failed to configure SwiftData container: \(error)")
+            // スキーマ変更エラーの場合、データを削除して再作成
+            print("⚠️ SwiftData migration error: \(error)")
+            print("🔄 Clearing old data and creating new container...")
+
+            // 既存のデータストアを削除
+            if let url = modelConfiguration.url {
+                try? FileManager.default.removeItem(at: url)
+            }
+
+            // 新しいコンテナを作成
+            do {
+                return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            } catch {
+                fatalError("Failed to configure SwiftData container after cleanup: \(error)")
+            }
         }
     }()
 

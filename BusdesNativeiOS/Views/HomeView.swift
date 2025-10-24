@@ -5,7 +5,7 @@ struct HomeView: View {
     @Binding var path: NavigationPath
 
     // SwiftDataから直接クエリ（自動UI更新）
-    @Query(sort: \Route.createdAt, order: .reverse) private var savedRoutes: [Route]
+    @Query private var savedRoutes: [Route]
 
     // ViewModelはリアルタイムバス情報のみ管理
     @State private var viewModel = HomeViewModel()
@@ -30,7 +30,7 @@ struct HomeView: View {
                         onDelete: deleteRoute
                     )
                     .refreshable {
-                        await viewModel.fetchAllTimeTables()
+                        await viewModel.fetchAllTimeTables(for: savedRoutes)
                     }
                 }
 
@@ -94,7 +94,7 @@ private struct RouteListView: View {
     var body: some View {
         List {
             ForEach(routes) { route in
-                HomeCardView(routeEntity: route)
+                HomeCardView(viewModel: viewModel, routeEntity: route)
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button(role: .destructive) {
                             onDelete(route)

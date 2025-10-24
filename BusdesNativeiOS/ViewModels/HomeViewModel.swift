@@ -30,10 +30,6 @@ final class HomeViewModel {
         self.apiService = apiService
     }
 
-    deinit {
-        timerService.stopTimer()
-    }
-
     // MARK: - Public Methods
 
     /// リアルタイム更新を開始

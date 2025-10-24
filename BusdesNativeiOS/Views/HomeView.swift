@@ -11,11 +11,11 @@ struct HomeView: View {
     // ViewModelはリアルタイムバス情報のみ管理
     @State private var viewModel = HomeViewModel()
 
-    // 広告サービス（@Observable対応）
-    @Environment(AdService.self) private var adService
-
     // ModelContext（削除操作用）
     @Environment(\.modelContext) private var modelContext
+
+    // 広告サービス（シングルトン直接参照）
+    private var adService: AdService { AdService.shared }
 
     private let appBarHeight: CGFloat = UIScreen.main.bounds.height * 0.35
 

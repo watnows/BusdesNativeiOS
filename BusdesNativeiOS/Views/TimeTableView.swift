@@ -77,6 +77,6 @@ extension TimeTableView {
     }
 }
 
-#Preview {
-    TimeTableView(viewModel: TimeTableViewModel())
-}
+//#Preview {
+//    TimeTableView(viewModel: TimeTableViewModel())
+//}

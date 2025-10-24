@@ -13,18 +13,14 @@ struct BusdesNativeiOSApp: App {
         }
     }()
 
-    // 広告サービス（@Observable対応）
-    @State private var adService = AdService.shared
-
     init() {
-        // 広告サービスの初期化
+        // 広告サービスの初期化（シングルトン）
         AdService.shared.initialize()
     }
 
     var body: some Scene {
         WindowGroup {
             BaseView()
-                .environment(adService)
         }
         .modelContainer(container)
     }

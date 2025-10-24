@@ -137,11 +137,11 @@ struct HomeCardView: View {
     }
 }
 
-#Preview {
-    let previewRoute = Route(to: "立命館大学", from: "南草津駅")
-    let previewUserService = UserService(modelContext: ModelContext(ModelContainer(for: Route.self)))
-
-    HomeCardView(routeEntity: previewRoute)
-        .environmentObject(HomeViewModel(userModel: previewUserService))
-        .padding()
-}
+//#Preview {
+//    let previewRoute = Route(to: "立命館大学", from: "南草津駅")
+//    let previewUserService = UserService(modelContext: ModelContext(ModelContainer(for: Route.self)))
+//
+//    HomeCardView(routeEntity: previewRoute)
+//        .environmentObject(HomeViewModel(userModel: previewUserService))
+//        .padding()
+//}

@@ -71,10 +71,10 @@ struct BaseView: View {
     }
 }
 
-#Preview {
-    let userService = UserService()
-    BaseView()
-        .environmentObject(userService)
-        .environmentObject(HomeViewModel(userModel: userService))
-        .environmentObject(AdService.shared)
-}
+//#Preview {
+//    let userService = UserService()
+//    BaseView()
+//        .environmentObject(userService)
+//        .environmentObject(HomeViewModel(userModel: userService))
+//        .environmentObject(AdService.shared)
+//}

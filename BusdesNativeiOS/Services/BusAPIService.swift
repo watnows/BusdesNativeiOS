@@ -21,11 +21,12 @@ protocol BusAPIServiceProtocol {
 
 /// バスAPI通信サービスの実装
 /// 外部APIと通信し、バス接近情報と時刻表を取得する
-/// エラー時の自動リトライ機能を備える
+/// キャッシング機能により、不要なAPI呼び出しを削減してパフォーマンスを向上
+@MainActor
 class BusAPIService: BusAPIServiceProtocol {
     private let session: URLSession
     private let decoder: JSONDecoder
-    private let maxRetryAttempts: Int
+    private let cacheService = APICacheService.shared
 
     /// イニシャライザ
     /// - Parameters:
@@ -40,17 +41,39 @@ class BusAPIService: BusAPIServiceProtocol {
     }
 
     func fetchNextBus(from: String, to: String) async throws -> ApproachInfo {
+        // キャッシュ確認
+        if let cachedData = cacheService.getApproachInfo(from: from, to: to) {
+            return cachedData
+        }
+
+        // APIから取得
         guard let url = Constants.API.nextBusURL(from: from, to: to) else {
             throw NetworkError.invalidURL
         }
-        return try await performRequest(url: url)
+        let data: ApproachInfo = try await performRequest(url: url)
+
+        // キャッシュに保存
+        cacheService.setApproachInfo(data, from: from, to: to)
+
+        return data
     }
 
     func fetchTimeTable(from: String, to: String) async throws -> TimeTable {
+        // キャッシュ確認
+        if let cachedData = cacheService.getTimeTable(from: from, to: to) {
+            return cachedData
+        }
+
+        // APIから取得
         guard let url = Constants.API.timeTableURL(from: from, to: to) else {
              throw NetworkError.invalidURL
          }
-        return try await performRequest(url: url)
+        let data: TimeTable = try await performRequest(url: url)
+
+        // キャッシュに保存
+        cacheService.setTimeTable(data, from: from, to: to)
+
+        return data
     }
 
     /// HTTPリクエストを実行し、レスポンスをデコード（リトライ機能付き）

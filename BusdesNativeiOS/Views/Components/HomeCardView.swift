@@ -1,19 +1,19 @@
 import SwiftUI
-import CoreData
 
 struct HomeCardView: View {
     @EnvironmentObject var viewModel: HomeViewModel
     @State private var selectedInfo = 0
-    var routeEntity: Routes
-    private var routeID: NSManagedObjectID { routeEntity.objectID }
-    private var busInfos: [NextBusModel] { viewModel.timeTables[routeID] ?? [] }
+    var routeEntity: Route
+
+    private var routeID: UUID { routeEntity.id }
+    private var busInfos: [NextBus] { viewModel.timeTables[routeID] ?? [] }
     private var countdownString: String { viewModel.countdowns[routeID] ?? "--:--:--" }
     private var errorMessage: NetworkError? { viewModel.errorMessages[routeID] ?? nil }
     
     var body: some View {
         VStack(spacing: 10) {
             HStack {
-                Text(routeEntity.from ?? "未設定")
+                Text(routeEntity.from)
                     .font(.title2)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -22,7 +22,7 @@ struct HomeCardView: View {
                     .foregroundColor(Color.appRed)
                     .font(.title)
                     .fontWeight(.heavy)
-                Text(routeEntity.to ?? "未設定")
+                Text(routeEntity.to)
                     .font(.title2)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -108,7 +108,7 @@ struct HomeCardView: View {
             .frame(maxWidth: .infinity)
     }
     
-    private func busInfoListView(infos: [NextBusModel]) -> some View {
+    private func busInfoListView(infos: [NextBus]) -> some View {
         VStack(alignment: .center, spacing: 6) {
             let currentInfo = infos[selectedInfo]
             Text("\(currentInfo.via) \(currentInfo.busStop)番乗り場")
@@ -131,7 +131,7 @@ struct HomeCardView: View {
         .padding(.horizontal)
     }
     
-    private func shouldShowWarningIcon(for route: Routes) -> Bool {
+    private func shouldShowWarningIcon(for route: Route) -> Bool {
         return false
     }
 }

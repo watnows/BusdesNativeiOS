@@ -21,7 +21,7 @@ struct AddLineView: View {
         .onChange(of: viewModel.searchQuery) {
             viewModel.filterBusStops(with: viewModel.searchQuery)
         }
-        .navigationDestination(for: BusStopModel.self) { busStop in
+        .navigationDestination(for: BusStop.self) { busStop in
             SetGoalView(from: busStop, path: $path)
         }
         .navigationTitle("バス停を選択")

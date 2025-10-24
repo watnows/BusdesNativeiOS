@@ -7,7 +7,7 @@ protocol WebVIewControllerProtocol: AnyObject {
 }
 
 class WebViewController: UIViewController, WKUIDelegate {
-    var webView: WKWebView!
+    private var webView: WKWebView?
     var progressView = UIProgressView(progressViewStyle: .bar)
     let url: String
 
@@ -35,8 +35,8 @@ class WebViewController: UIViewController, WKUIDelegate {
     }
 
     deinit {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.isLoading))
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+        webView?.removeObserver(self, forKeyPath: #keyPath(WKWebView.isLoading))
+        webView?.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
     }
 }
 
@@ -49,6 +49,7 @@ extension WebViewController: WebVIewControllerProtocol {
     }
 
     func setProgressbar() {
+        guard let webView = webView else { return }
         webView.addSubview(progressView)
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.widthAnchor.constraint(equalTo: webView.widthAnchor, multiplier: 1.0).isActive = true
@@ -64,7 +65,7 @@ extension WebViewController: WebVIewControllerProtocol {
             return
         }
         let myRequest = URLRequest(url: myURL)
-        webView.load(myRequest)
+        webView?.load(myRequest)
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -72,6 +73,8 @@ extension WebViewController: WebVIewControllerProtocol {
             assertionFailure()
             return
         }
+
+        guard let webView = webView else { return }
 
         switch keyPath {
         case #keyPath(WKWebView.isLoading):

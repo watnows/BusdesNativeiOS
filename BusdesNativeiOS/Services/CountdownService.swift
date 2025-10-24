@@ -5,7 +5,7 @@ struct CountdownService {
     // MARK: - Constants
 
     private enum Constants {
-        static let timeZone = TimeZone(identifier: "Asia/Tokyo")!
+        static let timeZone = TimeZone(identifier: "Asia/Tokyo") ?? .current
         static let dateFormat = "HH:mm"
         static let midnightCrossoverThreshold = -12 // 日付跨ぎ判定の閾値（時間）
         static let departureDisplayThreshold = 5    // "出発"表示の秒数閾値

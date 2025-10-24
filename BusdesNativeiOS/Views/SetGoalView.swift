@@ -2,18 +2,16 @@ import SwiftUI
 import SwiftData
 
 struct SetGoalView: View {
-    @StateObject private var viewModel: SetGoalViewModel
-    @State private var selectStaition = true
-    @State private var selectedGoal = "南草津駅"
+    @State private var viewModel: SetGoalViewModel
+    @State private var selectStation = true
     @Binding var path: NavigationPath
-    @State private var showAlert = false
     @EnvironmentObject var userModel: UserService
     let receivedBusStop: BusStop
 
     init(from: BusStop, path: Binding<NavigationPath>) {
         self.receivedBusStop = from
         self._path = path
-        _viewModel = StateObject(wrappedValue: SetGoalViewModel(from: from))
+        self.viewModel = SetGoalViewModel(from: from)
     }
 
     var body: some View {
@@ -23,48 +21,49 @@ struct SetGoalView: View {
                 .font(.headline)
             Text("乗り場：\(viewModel.from.name)")
                 .font(.headline)
-                .padding( .top, 50)
+                .padding(.top, 50)
+
             HStack {
                 Spacer()
                 Button {
-                    selectStaition = true
-                    selectedGoal = "南草津駅"
+                    selectStation = true
+                    viewModel.selectGoal("南草津駅")
                 } label: {
                     Text("南草津駅")
                 }
-                .buttonStyle(RoundedRedButton(isSelected: selectStaition))
-                .disabled(selectStaition)
+                .buttonStyle(RoundedRedButton(isSelected: selectStation))
+                .disabled(selectStation)
+
                 Spacer()
                 Button {
-                    selectStaition = false
-                    selectedGoal = "立命館大学"
+                    selectStation = false
+                    viewModel.selectGoal("立命館大学")
                 } label: {
                     Text("立命館大学")
                 }
-                .buttonStyle(RoundedRedButton(isSelected: !selectStaition))
-                .disabled(!selectStaition)
+                .buttonStyle(RoundedRedButton(isSelected: !selectStation))
+                .disabled(!selectStation)
                 Spacer()
             }
             .padding(.top, 50)
+
             Button {
-                if viewModel.from.name == selectedGoal {
-                    showAlert.toggle()
-                    return
-                } else if userModel.isRouteSaved(from: viewModel.from.name, to: selectedGoal) {
-                    showAlert.toggle()
-                    return
+                if viewModel.setRoute(to: viewModel.state.selectedGoal, userModel: userModel) {
+                    // 成功した場合、ナビゲーションをリセット
+                    path.removeLast(path.count)
                 }
-                viewModel.setRoute(to: selectedGoal, userModel: userModel)
-                path.removeLast(path.count)
             } label: {
                 Text("決定")
             }
             .buttonStyle(RoundedGrayButton())
             .padding(.top, 40)
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("設定エラー"),
-                      message: Text(viewModel.from.name == selectedGoal ? "乗り場と降り場が同じようです" : "既に登録済みのルートです"),
-                      dismissButton: .default(Text("OK"))
+            .alert(isPresented: $viewModel.state.showAlert) {
+                Alert(
+                    title: Text("設定エラー"),
+                    message: Text(viewModel.state.alertMessage),
+                    dismissButton: .default(Text("OK")) {
+                        viewModel.dismissAlert()
+                    }
                 )
             }
             Spacer()

@@ -2,9 +2,9 @@ import SwiftUI
 import SwiftData
 
 struct HomeCardView: View {
-    @EnvironmentObject var viewModel: HomeViewModel
+    let viewModel: HomeViewModel
+    let routeEntity: Route
     @State private var selectedInfo = 0
-    var routeEntity: Route
 
     private var routeID: UUID { routeEntity.id }
     private var busInfos: [NextBus] { viewModel.timeTables[routeID] ?? [] }

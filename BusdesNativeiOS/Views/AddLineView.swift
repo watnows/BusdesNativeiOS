@@ -2,12 +2,12 @@ import SwiftUI
 import SwiftData
 
 struct AddLineView: View {
-    @StateObject var viewModel = AddLineViewModel()
+    @State private var viewModel = AddLineViewModel()
     @Binding var path: NavigationPath
 
     var body: some View {
         List {
-            ForEach(viewModel.filteredData, id: \.self) { busStop in
+            ForEach(viewModel.state.filteredData, id: \.self) { busStop in
                 NavigationLink(value: busStop) {
                     VStack(alignment: .leading) {
                         Text(busStop.name)
@@ -18,9 +18,9 @@ struct AddLineView: View {
                 }
             }
         }
-        .searchable(text: $viewModel.searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "バス停名を入力")
-        .onChange(of: viewModel.searchQuery) {
-            viewModel.filterBusStops(with: viewModel.searchQuery)
+        .searchable(text: $viewModel.state.searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "バス停名を入力")
+        .onChange(of: viewModel.state.searchQuery) {
+            viewModel.filterBusStops(with: viewModel.state.searchQuery)
         }
         .navigationDestination(for: BusStop.self) { busStop in
             SetGoalView(from: busStop, path: $path)

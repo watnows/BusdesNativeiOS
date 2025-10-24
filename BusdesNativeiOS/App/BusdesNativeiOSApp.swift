@@ -8,7 +8,7 @@ struct BusdesNativeiOSApp: App {
     let container = {
         do {
             let schema = Schema([Route.self])
-            let modelConfiguration = ModelConfiguration(schema: schema, isAutomigrationEnabled: true)
+            let modelConfiguration = ModelConfiguration(schema: schema)
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             // スキーマ変更エラーの場合、データを削除して再作成
@@ -22,7 +22,7 @@ struct BusdesNativeiOSApp: App {
             // 新しいコンテナを作成
             do {
                 let schema = Schema([Route.self])
-                let modelConfiguration = ModelConfiguration(schema: schema, isAutomigrationEnabled: true)
+                let modelConfiguration = ModelConfiguration(schema: schema)
                 return try ModelContainer(for: schema, configurations: [modelConfiguration])
             } catch {
                 fatalError("Failed to configure SwiftData container after cleanup: \(error)")

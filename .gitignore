@@ -2,6 +2,9 @@ xcuserdata/
 *.xcscmblueprint
 *.xccheckout
 
+# macOS
+.DS_Store
+
 build/
 DerivedData/
 *.moved-aside

@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct HomeCardView: View {
     @EnvironmentObject var viewModel: HomeViewModel
@@ -134,4 +135,13 @@ struct HomeCardView: View {
     private func shouldShowWarningIcon(for route: Route) -> Bool {
         return false
     }
+}
+
+#Preview {
+    let previewRoute = Route(to: "立命館大学", from: "南草津駅")
+    let previewUserService = UserService(modelContext: ModelContext(ModelContainer(for: Route.self)))
+
+    HomeCardView(routeEntity: previewRoute)
+        .environmentObject(HomeViewModel(userModel: previewUserService))
+        .padding()
 }

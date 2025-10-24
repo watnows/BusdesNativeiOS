@@ -21,3 +21,9 @@ struct WebViewControllerRepresentable: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: WebViewController, context: Context) {
     }
 }
+
+#Preview {
+    NavigationView {
+        WebView(url: "https://example.com", title: "サンプルページ")
+    }
+}

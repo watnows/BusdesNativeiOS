@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C4C483D2E12F2C500CB0346 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 8C4C483C2E12F2C500CB0346 /* GoogleMobileAds */; };
 		DE4AAC3C9F63A3B5F3C2171D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C01B753F05B3584CFE61D32E /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C4C483D2E12F2C500CB0346 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +103,7 @@
 			);
 			name = BusdesNativeiOS;
 			packageProductDependencies = (
+				8C4C483C2E12F2C500CB0346 /* GoogleMobileAds */,
 			);
 			productName = BusdesNativeiOS;
 			productReference = 89B3160AD9D3F2EDE1828C63 /* BusdesNativeiOS.app */;
@@ -125,6 +128,7 @@
 			);
 			mainGroup = 390FF4D32AEAC2B7FB3235DC;
 			packageReferences = (
+				8C4C483B2E12F2C500CB0346 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
@@ -355,6 +359,25 @@
 			defaultConfigurationName = Develop;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8C4C483B2E12F2C500CB0346 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8C4C483C2E12F2C500CB0346 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C4C483B2E12F2C500CB0346 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B5CB44FBE37E99D75DFE4693 /* Project object */;
 }

@@ -74,3 +74,7 @@ extension TimeTableView {
         .buttonStyle(.plain)
     }
 }
+
+#Preview {
+    TimeTableView(viewModel: TimeTableViewModel())
+}

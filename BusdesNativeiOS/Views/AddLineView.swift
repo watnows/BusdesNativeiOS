@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct AddLineView: View {
     @StateObject var viewModel = AddLineViewModel()
@@ -28,5 +29,14 @@ struct AddLineView: View {
         .toolbarColorScheme(.dark)
         .toolbarBackground(Color.appRed, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+    }
+}
+
+#Preview {
+    let previewUserService = UserService(modelContext: ModelContext(try! ModelContainer(for: Route.self)))
+
+    NavigationView {
+        AddLineView(path: .constant(NavigationPath()))
+            .environmentObject(previewUserService)
     }
 }

@@ -25,3 +25,14 @@ struct TimeTableParts: View{
         .foregroundColor(.black)
     }
 }
+
+#Preview {
+    let mockTimeTableInfo = [
+        TimeTableInfo(via: "経由A", min: "05", busStop: "1番"),
+        TimeTableInfo(via: "経由B", min: "15", busStop: "2番"),
+        TimeTableInfo(via: "経由C", min: "30", busStop: "3番")
+    ]
+    
+    return TimeTableParts(hour: 8, timeTableInfo: mockTimeTableInfo)
+        .padding()
+}

@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct SetGoalView: View {
     @StateObject private var viewModel: SetGoalViewModel
@@ -74,5 +75,14 @@ struct SetGoalView: View {
         .toolbarColorScheme(.dark)
         .toolbarBackground(Color.appRed, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+    }
+}
+
+#Preview {
+    let previewUserService = UserService(modelContext: ModelContext(try! ModelContainer(for: Route.self)))
+
+    NavigationView {
+        SetGoalView(from: BusStop(name: "南草津駅", kana: "みなみくさつえき"), path: .constant(NavigationPath()))
+            .environmentObject(previewUserService)
     }
 }

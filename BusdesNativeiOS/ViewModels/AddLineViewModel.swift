@@ -13,7 +13,7 @@ final class AddLineViewModel {
     struct State {
         var searchQuery: String = ""
         var filteredData: [BusStop] = []
-        var errorMessage: String? = nil
+        var loadingState = LoadingState()
     }
 
     var state = State()
@@ -34,14 +34,16 @@ final class AddLineViewModel {
 
     /// バス停一覧を読み込む
     private func loadBusStops() {
+        state.loadingState.startLoading()
+
         do {
             busStops = try busStopRepository.getBusStops()
             state.filteredData = busStops
-            state.errorMessage = nil
+            state.loadingState.finishLoading()
         } catch {
             busStops = []
             state.filteredData = []
-            state.errorMessage = "バス停データの読み込みに失敗しました"
+            state.loadingState.failLoading(with: "バス停データの読み込みに失敗しました")
         }
     }
 

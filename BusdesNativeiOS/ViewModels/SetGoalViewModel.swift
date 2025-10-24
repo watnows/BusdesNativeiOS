@@ -14,6 +14,7 @@ final class SetGoalViewModel {
         var selectedGoal: String = "南草津駅"
         var showAlert: Bool = false
         var alertMessage: String = ""
+        var loadingState = LoadingState()
     }
 
     var state = State()
@@ -43,10 +44,13 @@ final class SetGoalViewModel {
     /// - Returns: 設定が成功したかどうか
     @discardableResult
     func setRoute(to: String, userModel: UserService) -> Bool {
+        state.loadingState.startLoading()
+
         // バリデーション: 乗り場と降り場が同じ
         if from.name == to {
             state.alertMessage = "乗り場と降り場が同じようです"
             state.showAlert = true
+            state.loadingState.finishLoading()
             return false
         }
 
@@ -54,11 +58,13 @@ final class SetGoalViewModel {
         if userModel.isRouteSaved(from: from.name, to: to) {
             state.alertMessage = "既に登録済みのルートです"
             state.showAlert = true
+            state.loadingState.finishLoading()
             return false
         }
 
         // 路線を追加
         userModel.addRoute(from: from.name, to: to)
+        state.loadingState.finishLoading()
         return true
     }
 

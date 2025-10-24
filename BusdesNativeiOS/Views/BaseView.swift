@@ -3,7 +3,7 @@ import SwiftUI
 struct BaseView: View {
     @State private var path = NavigationPath()
     @State private var selectedTab: Tab = .home
-    @StateObject private var viewModel = TimeTableViewModel()
+    @State private var viewModel = TimeTableViewModel()
     private let appBarHeight: CGFloat = UIScreen.main.bounds.height * 0.35
     
     enum Tab {
@@ -61,7 +61,7 @@ struct BaseView: View {
                 }
             }
             .task {
-                if viewModel.timeTableToRits == nil && viewModel.timeTableFromRits == nil {
+                if viewModel.state.timeTableToRits == nil && viewModel.state.timeTableFromRits == nil {
                     await viewModel.fetchTimeTable()
                 }
             }

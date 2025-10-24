@@ -90,6 +90,12 @@ final class HomeViewModel {
         selectedBusIndices.removeAll()
     }
 
+    /// 特定の路線のバス情報取得を手動でリトライ
+    /// - Parameter route: リトライ対象の路線
+    func retryFetchTimeTable(for route: Route) async {
+        await fetchTimeTable(for: route)
+    }
+
     // MARK: - Private Methods
 
     /// 全路線のバス時刻表を取得

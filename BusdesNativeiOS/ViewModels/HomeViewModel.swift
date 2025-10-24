@@ -1,65 +1,99 @@
-import Combine
 import Foundation
+import Observation
 
+/// ホーム画面のViewModel
+/// リアルタイムバス情報の更新のみを担当（路線管理はSwiftDataに委譲）
 @MainActor
-class HomeViewModel: ObservableObject {
-    @Published var timeTables: [UUID: [NextBus]] = [:]
-    @Published var countdowns: [UUID: String] = [:]
-    @Published var errorMessages: [UUID: NetworkError?] = [:]
+@Observable
+final class HomeViewModel {
+
+    // MARK: - State
+
+    /// バス時刻表データ（路線ID → バス情報リスト）
+    var timeTables: [UUID: [NextBus]] = [:]
+
+    /// カウントダウン文字列（路線ID → カウントダウン表示）
+    var countdowns: [UUID: String] = [:]
+
+    /// エラーメッセージ（路線ID → エラー）
+    var errorMessages: [UUID: NetworkError?] = [:]
+
+    // MARK: - Dependencies
 
     private var apiService: BusAPIServiceProtocol
-    private var userModel: UserService
     private let countdownService = CountdownService()
-    private var userModelCancellable: AnyCancellable?
-    private var timerCancellable: AnyCancellable?
+    private let timerService = TimerService()
 
-    init(userModel: UserService, apiService: BusAPIServiceProtocol = BusAPIService()) {
-        self.userModel = userModel
+    // MARK: - Initialization
+
+    init(apiService: BusAPIServiceProtocol = BusAPIService()) {
         self.apiService = apiService
-        Task {
-            await fetchAllTimeTables()
-        }
-        startCountdownTimer()
-
-        userModelCancellable = userModel.$savedRoutes
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] updatedRoutes in
-                guard let self = self else { return }
-                self.clearAllRouteData()
-                Task {
-                    await self.fetchAllTimeTables()
-                }
-            }
     }
 
     deinit {
-        timerCancellable?.cancel()
-        userModelCancellable?.cancel()
+        timerService.stopTimer()
     }
 
-    private func clearAllRouteData() {
-        timeTables.removeAll()
-        errorMessages.removeAll()
-        countdowns.removeAll()
+    // MARK: - Public Methods
+
+    /// リアルタイム更新を開始
+    /// - Parameter routes: 監視対象の路線リスト
+    func startRealtimeUpdates(for routes: [Route]) async {
+        // 初回のバス情報取得
+        await fetchAllTimeTables(for: routes)
+
+        // カウントダウンタイマー開始（1秒ごと）
+        timerService.startRepeatingTimer(interval: 1.0) { [weak self] in
+            guard let self = self else { return }
+            await self.updateCountdowns(for: routes)
+        }
     }
 
+    /// 路線リストが更新された時の処理
+    /// - Parameter routes: 新しい路線リスト
+    func updateRoutes(_ routes: [Route]) async {
+        // 不要なデータを削除
+        let routeIds = Set(routes.map { $0.id })
+        timeTables = timeTables.filter { routeIds.contains($0.key) }
+        errorMessages = errorMessages.filter { routeIds.contains($0.key) }
+        countdowns = countdowns.filter { routeIds.contains($0.key) }
+
+        // 新しい路線のバス情報を取得
+        await fetchAllTimeTables(for: routes)
+    }
+
+    /// バス時刻を解析して到着時刻を返す
+    /// - Parameters:
+    ///   - time: バス時刻（HH:mm形式）
+    ///   - requiredTime: 所要時間（分）
+    /// - Returns: 到着時刻文字列
     func parseTime(time: String, requiredTime: Int) -> String {
         return countdownService.parseTime(time: time, requiredTime: requiredTime)
     }
 
-    func fetchTimeTable(for route: Route) async {
+    // MARK: - Private Methods
+
+    /// 全路線のバス時刻表を取得
+    /// - Parameter routes: 取得対象の路線リスト
+    func fetchAllTimeTables(for routes: [Route]) async {
+        await withTaskGroup(of: Void.self) { group in
+            for route in routes {
+                group.addTask {
+                    await self.fetchTimeTable(for: route)
+                }
+            }
+        }
+    }
+
+    /// 単一路線のバス時刻表を取得
+    /// - Parameter route: 取得対象の路線
+    private func fetchTimeTable(for route: Route) async {
         let routeID = route.id
 
         errorMessages[routeID] = nil
 
         do {
             let apiResponse = try await apiService.fetchNextBus(from: route.from, to: route.to)
-
-            guard isRouteActive(routeID) else {
-                clearRouteData(for: routeID)
-                return
-            }
-
             self.timeTables[routeID] = apiResponse.approachInfos
             self.updateCountdown(for: routeID, with: apiResponse.approachInfos)
 
@@ -70,62 +104,36 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    private func isRouteActive(_ routeID: UUID) -> Bool {
-        return userModel.savedRoutes.contains(where: { $0.id == routeID })
-    }
-
-    private func clearRouteData(for routeID: UUID) {
-        timeTables.removeValue(forKey: routeID)
-        errorMessages.removeValue(forKey: routeID)
-        countdowns.removeValue(forKey: routeID)
-    }
-
+    /// エラー処理
+    /// - Parameters:
+    ///   - error: ネットワークエラー
+    ///   - routeID: 路線ID
     private func handleFetchError(_ error: NetworkError, for routeID: UUID) {
-        guard isRouteActive(routeID) else {
-            clearRouteData(for: routeID)
-            return
-        }
-
         errorMessages[routeID] = error
         timeTables[routeID] = []
         countdowns[routeID] = "---"
     }
 
-    func fetchAllTimeTables() async {
-        await withTaskGroup(of: Void.self) { group in
-            for route in userModel.savedRoutes {
-                group.addTask {
-                    await self.fetchTimeTable(for: route)
-                }
+    /// カウントダウンを更新
+    /// - Parameter routes: 監視対象の路線リスト
+    private func updateCountdowns(for routes: [Route]) async {
+        let currentRouteIDs = Set(routes.map { $0.id })
+
+        for routeID in currentRouteIDs {
+            if let currentInfos = self.timeTables[routeID] {
+                self.updateCountdown(for: routeID, with: currentInfos)
+            } else if self.countdowns[routeID] == nil && self.errorMessages[routeID] == nil {
+                self.countdowns[routeID] = "--:--:--"
+            } else if self.errorMessages[routeID] != nil {
+                self.countdowns[routeID] = "---"
             }
         }
     }
 
-    private func startCountdownTimer() {
-        timerCancellable = Timer.publish(every: 1, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                let currentRouteIDs = Set(self.userModel.savedRoutes.map { $0.id })
-
-                for routeID in currentRouteIDs {
-                    if let currentInfos = self.timeTables[routeID] {
-                        self.updateCountdown(for: routeID, with: currentInfos)
-                    } else if self.countdowns[routeID] == nil && self.errorMessages[routeID] == nil {
-                        self.countdowns[routeID] = "--:--:--"
-                    } else if self.errorMessages[routeID] != nil {
-                        self.countdowns[routeID] = "---"
-                    }
-                }
-
-                let existingCountdownKeys = Set(self.countdowns.keys)
-                let deletedKeys = existingCountdownKeys.subtracting(currentRouteIDs)
-                for key in deletedKeys {
-                    self.clearRouteData(for: key)
-                }
-            }
-    }
-
+    /// 単一路線のカウントダウンを更新
+    /// - Parameters:
+    ///   - routeID: 路線ID
+    ///   - infos: バス情報リスト
     private func updateCountdown(for routeID: UUID, with infos: [NextBus]) {
         countdowns[routeID] = countdownService.calculateCountdown(for: infos)
     }

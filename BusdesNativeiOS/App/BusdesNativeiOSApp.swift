@@ -4,6 +4,7 @@ import SwiftData
 @main
 struct BusdesNativeiOSApp: App {
 
+    // SwiftDataコンテナ
     let container = {
         do {
             return try ModelContainer(for: Route.self)
@@ -12,24 +13,17 @@ struct BusdesNativeiOSApp: App {
         }
     }()
 
-    @StateObject private var userModel: UserService
-    @StateObject private var homeViewModel: HomeViewModel
+    // 広告サービスのみ@EnvironmentObjectで共有
     @StateObject private var adService = AdService.shared
 
     init() {
-        let modelContext = container.mainContext
-        let um = UserService(modelContext: modelContext)
-        _userModel = StateObject(wrappedValue: um)
-        _homeViewModel = StateObject(wrappedValue: HomeViewModel(userModel: um))
-        
+        // 広告サービスの初期化
         AdService.shared.initialize()
     }
 
     var body: some Scene {
         WindowGroup {
             BaseView()
-                .environmentObject(userModel)
-                .environmentObject(homeViewModel)
                 .environmentObject(adService)
         }
         .modelContainer(container)

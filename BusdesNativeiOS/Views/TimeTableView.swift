@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct TimeTableView: View{
-    @StateObject var viewModel: TimeTableViewModel
-    @State var currentTab = 0
-    @Namespace var namespace
-    let hours = [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-    let goals = ["南草津駅→立命館大学", "立命館大学→南草津駅"]
+    @State private var viewModel = TimeTableViewModel()
+    @State private var currentTab = 0
+    @Namespace private var namespace
+
+    private let hours = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    private let goals = ["南草津駅→立命館大学", "立命館大学→南草津駅"]
+
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -19,7 +21,7 @@ struct TimeTableView: View{
             TabView(selection: $currentTab) {
                 List {
                     ForEach(hours, id: \.self) { hour in
-                        let timeTableInfo = viewModel.timeTableToRits?.timesForHour(hour) ?? []
+                        let timeTableInfo = viewModel.state.timeTableToRits?.timesForHour(hour) ?? []
                         if !timeTableInfo.isEmpty {
                             TimeTableParts(hour: hour, timeTableInfo: timeTableInfo)
                         }
@@ -31,7 +33,7 @@ struct TimeTableView: View{
                 .background(Color(uiColor: .secondarySystemBackground))
                 List {
                     ForEach(hours, id: \.self) { hour in
-                        let timeTableInfo = viewModel.timeTableFromRits?.timesForHour(hour) ?? []
+                        let timeTableInfo = viewModel.state.timeTableFromRits?.timesForHour(hour) ?? []
                         if !timeTableInfo.isEmpty {
                             TimeTableParts(hour: hour, timeTableInfo: timeTableInfo)
                         }
@@ -45,7 +47,7 @@ struct TimeTableView: View{
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
         .task {
-            if viewModel.timeTableToRits == nil && viewModel.timeTableFromRits == nil {
+            if viewModel.state.timeTableToRits == nil && viewModel.state.timeTableFromRits == nil {
                 await viewModel.fetchTimeTable()
             }
         }

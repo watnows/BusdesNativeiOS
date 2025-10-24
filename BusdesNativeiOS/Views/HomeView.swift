@@ -1,17 +1,18 @@
 import SwiftUI
 import SwiftData
+import os.log
 
 struct HomeView: View {
     @Binding var path: NavigationPath
 
-    // SwiftDataから直接クエリ（自動UI更新）
-    @Query private var savedRoutes: [Route]
+    // SwiftDataから直接クエリ（自動UI更新、新しい順）
+    @Query(sort: \Route.createdAt, order: .reverse) private var savedRoutes: [Route]
 
     // ViewModelはリアルタイムバス情報のみ管理
     @State private var viewModel = HomeViewModel()
 
-    // 広告サービス
-    @EnvironmentObject var adService: AdService
+    // 広告サービス（@Observable対応）
+    @Environment(AdService.self) private var adService
 
     // ModelContext（削除操作用）
     @Environment(\.modelContext) private var modelContext
@@ -63,7 +64,8 @@ struct HomeView: View {
         do {
             try modelContext.save()
         } catch {
-            print("⚠️ 路線削除エラー: \(error)")
+            Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.busdes", category: "HomeView")
+                .error("路線削除エラー: \(error.localizedDescription)")
         }
     }
 }

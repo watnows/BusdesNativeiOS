@@ -19,17 +19,21 @@ struct HomeCardView: View {
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .minimumScaleFactor(0.5)
+                    .accessibilityLabel("出発地: \(routeEntity.from)")
                 Image(systemName: "arrow.right")
                     .foregroundColor(Color.appRed)
                     .font(.title)
                     .fontWeight(.heavy)
+                    .accessibilityHidden(true)
                 Text(routeEntity.to)
                     .font(.title2)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .minimumScaleFactor(0.5)
+                    .accessibilityLabel("目的地: \(routeEntity.to)")
             }
             .padding(.horizontal, 20)
+            .accessibilityElement(children: .combine)
             CustomDottedLine()
                 .stroke(style: .init(dash: [4,3]))
                 .foregroundStyle(Color.appGray)
@@ -43,14 +47,17 @@ struct HomeCardView: View {
                         .foregroundColor(countdownColor)
                         .minimumScaleFactor(0.5)
                         .lineLimit(1)
+                        .accessibilityLabel(countdownAccessibilityLabel)
                     if shouldShowWarningIcon(for: routeEntity) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundColor(.orange)
                             .padding(.leading, 2)
+                            .accessibilityLabel("警告")
                     }
                     Spacer()
                 }
                 .padding(.top, 5)
+                .accessibilityElement(children: .combine)
                 Group {
                     if let error = errorMessage {
                         errorView(error)
@@ -91,6 +98,26 @@ struct HomeCardView: View {
             return .gray
         default:
             return .primary
+        }
+    }
+
+    private var countdownAccessibilityLabel: String {
+        switch countdownString {
+        case "出発":
+            return "バスは既に出発しました"
+        case "終了":
+            return "本日の運行は終了しました"
+        case "---":
+            return "バス情報を取得できませんでした"
+        case "--:--:--":
+            return "バス情報を読み込み中"
+        default:
+            // カウントダウン形式の場合（例: "00:15:30"）
+            let components = countdownString.split(separator: ":")
+            if components.count == 3 {
+                return "あと\(components[0])時間\(components[1])分\(components[2])秒でバスが到着します"
+            }
+            return "バス到着まで\(countdownString)"
         }
     }
     
@@ -152,21 +179,33 @@ struct HomeCardView: View {
                 .font(.subheadline)
                 .foregroundColor(.primary)
                 .padding(.bottom, 4)
-            
+                .accessibilityLabel("経由地: \(currentInfo.via)、乗り場: \(currentInfo.busStop)番")
+
             VStack(alignment: .leading, spacing: 10) {
                 ForEach(infos.indices, id: \.self) { index in
-                        Text("\(infos[index].realArrivalTime) → \(viewModel.parseTime(time: infos[index].realArrivalTime, requiredTime: infos[index].requiredTime))　　\(infos[index].via)")
-                            .font(.callout)
-                            .foregroundColor(selectedInfo == index ? .appRed :.primary)
-                            .lineLimit(1)
-                    .onTapGesture {
-                        self.selectedInfo = index
-                        viewModel.selectBus(at: index, for: routeID)
-                    }
+                    let info = infos[index]
+                    let arrivalTime = viewModel.parseTime(time: info.realArrivalTime, requiredTime: info.requiredTime)
+                    Text("\(info.realArrivalTime) → \(arrivalTime)　　\(info.via)")
+                        .font(.callout)
+                        .foregroundColor(selectedInfo == index ? .appRed :.primary)
+                        .lineLimit(1)
+                        .accessibilityLabel(busInfoAccessibilityLabel(for: info, arrivalTime: arrivalTime, isSelected: selectedInfo == index))
+                        .accessibilityAddTraits(selectedInfo == index ? .isSelected : [])
+                        .accessibilityHint("タップして選択")
+                        .onTapGesture {
+                            self.selectedInfo = index
+                            viewModel.selectBus(at: index, for: routeID)
+                        }
                 }
             }
         }
         .padding(.horizontal)
+        .accessibilityElement(children: .contain)
+    }
+
+    private func busInfoAccessibilityLabel(for info: NextBus, arrivalTime: String, isSelected: Bool) -> String {
+        let selectedText = isSelected ? "選択中、" : ""
+        return "\(selectedText)出発時刻: \(info.realArrivalTime)、到着時刻: \(arrivalTime)、経由: \(info.via)"
     }
     
     private func shouldShowWarningIcon(for route: Route) -> Bool {

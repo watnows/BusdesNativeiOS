@@ -3,9 +3,9 @@ import SwiftUI
 
 @MainActor
 class SetGoalViewModel: ObservableObject {
-    let from: BusStopModel
+    let from: BusStop
 
-    init(from: BusStopModel) {
+    init(from: BusStop) {
         self.from = from
     }
 

@@ -7,9 +7,9 @@ struct SetGoalView: View {
     @Binding var path: NavigationPath
     @State private var showAlert = false
     @EnvironmentObject var userModel: UserService
-    let receivedBusStop: BusStopModel
+    let receivedBusStop: BusStop
 
-    init(from: BusStopModel, path: Binding<NavigationPath>) {
+    init(from: BusStop, path: Binding<NavigationPath>) {
         self.receivedBusStop = from
         self._path = path
         _viewModel = StateObject(wrappedValue: SetGoalViewModel(from: from))

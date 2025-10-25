@@ -2,7 +2,10 @@ import Foundation
 
 /// バス停データを管理するシンプルなリポジトリ
 /// ローカルJSONファイルからバス停一覧を読み込む
-@MainActor
+///
+/// ## Swift 6並行処理対応
+/// `@preconcurrency`により、nonisolatedコンテキストからsharedへのアクセスを許可
+@preconcurrency @MainActor
 final class BusStopRepository {
 
     // シングルトンインスタンス（オプション: アプリ全体で1つのインスタンスを共有）

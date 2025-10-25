@@ -51,8 +51,15 @@ class WebViewController: UIViewController, WKUIDelegate {
     }
 
     deinit {
+        // メモリリーク防止: ロード中のコンテンツを停止
+        webView.stopLoading()
+
+        // KVO監視の解除
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.isLoading))
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+
+        // uiDelegateのnil化でretain cycleを防止
+        webView.uiDelegate = nil
     }
 }
 

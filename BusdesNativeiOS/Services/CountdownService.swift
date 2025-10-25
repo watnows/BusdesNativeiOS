@@ -11,6 +11,20 @@ struct CountdownService {
         static let departureDisplayThreshold = 5    // "出発"表示の秒数閾値
     }
 
+    // MARK: - Cached DateFormatter
+
+    /// キャッシュされたDateFormatter（パフォーマンス最適化）
+    ///
+    /// DateFormatterの生成コストは高いため、staticプロパティとしてキャッシュ化。
+    /// スレッドセーフ（structは値型のためコピーされる）。
+    private static let cachedDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = Constants.dateFormat
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = Constants.timeZone
+        return formatter
+    }()
+
     // MARK: - Public Methods
 
     /// 次のバス到着までのカウントダウン文字列を計算
@@ -55,14 +69,12 @@ struct CountdownService {
     ///   - requiredTime: 必要時間（分）
     /// - Returns: 到着時刻文字列（"HH:mm"形式）、解析失敗時は"--:--"
     func parseTime(time: String, requiredTime: Int) -> String {
-        let dateFormatter = createDateFormatter()
-
-        guard let date = dateFormatter.date(from: time),
+        guard let date = Self.cachedDateFormatter.date(from: time),
               let arrivalDate = Calendar.current.date(byAdding: .minute, value: requiredTime, to: date) else {
             return "--:--"
         }
 
-        return dateFormatter.string(from: arrivalDate)
+        return Self.cachedDateFormatter.string(from: arrivalDate)
     }
 
     // MARK: - Private Methods
@@ -76,13 +88,11 @@ struct CountdownService {
         let info = infos[index]
         let now = Date()
         let calendar = Calendar.current
-        let formatter = createDateFormatter()
         let nowComponents = calendar.dateComponents([.year, .month, .day], from: now)
 
         return parseNextBusDateTime(
             info.realArrivalTime,
             nowComponents: nowComponents,
-            formatter: formatter,
             calendar: calendar,
             now: now
         )
@@ -92,7 +102,6 @@ struct CountdownService {
     private func findNextBusTime(from infos: [NextBus]) -> Date? {
         let now = Date()
         let calendar = Calendar.current
-        let formatter = createDateFormatter()
         let nowComponents = calendar.dateComponents([.year, .month, .day], from: now)
 
         var nextBusTime: Date?
@@ -101,7 +110,6 @@ struct CountdownService {
             guard let targetDateTime = parseNextBusDateTime(
                 info.realArrivalTime,
                 nowComponents: nowComponents,
-                formatter: formatter,
                 calendar: calendar,
                 now: now
             ) else {
@@ -126,11 +134,10 @@ struct CountdownService {
     private func parseNextBusDateTime(
         _ timeString: String,
         nowComponents: DateComponents,
-        formatter: DateFormatter,
         calendar: Calendar,
         now: Date
     ) -> Date? {
-        guard let time = formatter.date(from: timeString) else {
+        guard let time = Self.cachedDateFormatter.date(from: timeString) else {
             return nil
         }
 
@@ -153,14 +160,5 @@ struct CountdownService {
         }
 
         return targetDateTime
-    }
-
-    /// 日付フォーマッターを生成
-    private func createDateFormatter() -> DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = Constants.dateFormat
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = Constants.timeZone
-        return formatter
     }
 }

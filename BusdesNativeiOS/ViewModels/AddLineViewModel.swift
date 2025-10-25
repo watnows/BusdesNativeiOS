@@ -28,19 +28,43 @@ final class AddLineViewModel {
     /// イニシャライザ
     /// - Parameter busStopRepository: バス停データリポジトリ（テスト用にカスタマイズ可能）
     ///
-    /// 初期化時に自動的にバス停データを読み込む
-    init(busStopRepository: BusStopRepository = BusStopRepository.shared) {
+    /// ## Swift 6並行処理対応
+    /// `nonisolated`により、@MainActorクラス内でも同期的な初期化が可能
+    /// デフォルトRepositoryの使用は`makeDefault()`ファクトリメソッドを推奨
+    ///
+    /// ## 使用例
+    /// ```swift
+    /// // 通常の使用（デフォルトRepository）
+    /// let viewModel = AddLineViewModel.makeDefault()
+    ///
+    /// // テスト用（カスタムRepository）
+    /// let viewModel = AddLineViewModel(busStopRepository: mockRepository)
+    /// ```
+    nonisolated init(busStopRepository: BusStopRepository) {
         self.busStopRepository = busStopRepository
-        loadBusStops()
+        // loadBusStops()は@MainActorメソッドのため、初期化後に呼び出す必要あり
+        // 実際のロードはViewのonAppearで実行される想定
     }
 
-    // MARK: - Private Methods
+    /// デフォルトRepositoryを使用するViewModelを生成
+    /// - Returns: デフォルトのBusStopRepositoryを使用するViewModel
+    static func makeDefault() -> AddLineViewModel {
+        AddLineViewModel(busStopRepository: BusStopRepository.shared)
+    }
+
+    // MARK: - Public Methods
 
     /// バス停一覧をJSONファイルから読み込む
     ///
     /// 読み込み成功時は全バス停を`filteredData`に設定
     /// 失敗時はエラーメッセージを`loadingState`に格納
-    private func loadBusStops() {
+    ///
+    /// ## 使用例
+    /// ```swift
+    /// let viewModel = AddLineViewModel()
+    /// await viewModel.loadBusStops()  // Viewのinit後に呼び出し
+    /// ```
+    func loadBusStops() {
         state.loadingState.startLoading()
 
         do {
@@ -53,8 +77,6 @@ final class AddLineViewModel {
             state.loadingState.failLoading(with: "バス停データの読み込みに失敗しました")
         }
     }
-
-    // MARK: - Public Methods
 
     /// 検索クエリでバス停をフィルタリング
     /// - Parameter query: 検索文字列（バス停名・かな名の部分一致で検索）

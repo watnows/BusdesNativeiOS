@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct AddLineView: View {
-    @State private var viewModel = AddLineViewModel()
+    @State private var viewModel = AddLineViewModel.makeDefault()
     @Binding var path: NavigationPath
 
     var body: some View {
@@ -29,6 +29,9 @@ struct AddLineView: View {
         .toolbarColorScheme(.dark)
         .toolbarBackground(Color.appRed, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .onAppear {
+            viewModel.loadBusStops()
+        }
     }
 }
 

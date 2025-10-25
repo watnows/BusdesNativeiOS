@@ -26,6 +26,7 @@ protocol BusAPIServiceProtocol {
 class BusAPIService: BusAPIServiceProtocol {
     private let session: URLSession
     private let decoder: JSONDecoder
+    private let maxRetryAttempts: Int
     private let cacheService = APICacheService.shared
 
     /// イニシャライザ
@@ -33,7 +34,11 @@ class BusAPIService: BusAPIServiceProtocol {
     ///   - session: URLSession（テスト用にカスタマイズ可能）
     ///   - decoder: JSONDecoder（snake_case自動変換設定済み）
     ///   - maxRetryAttempts: 最大リトライ回数（デフォルト3回）
-    init(session: URLSession = URLSession(configuration:  .default), decoder: JSONDecoder = .init(), maxRetryAttempts: Int = 3) {
+    ///
+    /// ## @MainActorとnonisolated
+    /// - クラス全体が@MainActorだが、initのみnonisolatedで同期コンテキストから呼び出し可能
+    /// - プロパティ設定は全てスレッドセーフ（immutableまたはshared singleton）
+    nonisolated init(session: URLSession = URLSession(configuration:  .default), decoder: JSONDecoder = .init(), maxRetryAttempts: Int = 3) {
         self.session = session
         self.decoder = decoder
         self.maxRetryAttempts = maxRetryAttempts

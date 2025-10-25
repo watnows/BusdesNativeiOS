@@ -11,7 +11,9 @@
       "Bash(git pull:*)",
       "Bash(git stash:*)",
       "mcp__serena__list_dir",
-      "mcp__serena__find_symbol"
+      "mcp__serena__find_symbol",
+      "Bash(xcodebuild:*)",
+      "Bash(tee:*)"
     ],
     "deny": [],
     "ask": []

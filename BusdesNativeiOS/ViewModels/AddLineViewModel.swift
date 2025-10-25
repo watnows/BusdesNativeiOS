@@ -83,57 +83,43 @@ final class AddLineViewModel {
 
     /// イニシャライザ
     ///
-    /// ## 概要
-    /// ViewModelを初期化し、バス停データの読み込みを開始します。
-    /// 読み込みは同期的に実行され、初期化完了時には
-    /// `state.filteredData`に全バス停が設定されています。
-    ///
-    /// ## パラメータ
-    /// - Parameter busStopRepository: バス停データリポジトリ（デフォルト: shared singleton）
-    ///   テスト時にはモックリポジトリを注入して動作をカスタマイズできます
-    ///
-    /// ## エラーハンドリング
-    /// データ読み込みに失敗した場合、`state.loadingState`にエラーメッセージが設定され、
-    /// `state.filteredData`は空配列になります。
+    /// ## Swift 6並行処理対応
+    /// `nonisolated`により、@MainActorクラス内でも同期的な初期化が可能
+    /// デフォルトRepositoryの使用は`makeDefault()`ファクトリメソッドを推奨
     ///
     /// ## 使用例
     /// ```swift
-    /// // 本番環境（デフォルトリポジトリ使用）
-    /// let viewModel = AddLineViewModel()
+    /// // 通常の使用（デフォルトRepository）
+    /// let viewModel = AddLineViewModel.makeDefault()
     ///
-    /// // テスト環境（モックリポジトリ注入）
-    /// let mockRepo = MockBusStopRepository()
-    /// let viewModel = AddLineViewModel(busStopRepository: mockRepo)
+    /// // テスト用（カスタムRepository）
+    /// let viewModel = AddLineViewModel(busStopRepository: mockRepository)
     /// ```
-    init(busStopRepository: BusStopRepository = BusStopRepository.shared) {
+    nonisolated init(busStopRepository: BusStopRepository) {
         self.busStopRepository = busStopRepository
-        loadBusStops()
+        // loadBusStops()は@MainActorメソッドのため、初期化後に呼び出す必要あり
+        // 実際のロードはViewのonAppearで実行される想定
     }
 
-    // MARK: - Private Methods
+    /// デフォルトRepositoryを使用するViewModelを生成
+    /// - Returns: デフォルトのBusStopRepositoryを使用するViewModel
+    static func makeDefault() -> AddLineViewModel {
+        AddLineViewModel(busStopRepository: BusStopRepository.shared)
+    }
+
+    // MARK: - Public Methods
 
     /// バス停一覧をJSONファイルから読み込む
     ///
-    /// ## 処理フロー
-    /// 1. `loadingState.startLoading()`: ローディング状態を開始
-    /// 2. `busStopRepository.getBusStops()`: バス停データを取得
-    /// 3. 成功時: `busStops`と`filteredData`に全バス停を設定、ローディング完了
-    /// 4. 失敗時: 空配列を設定、エラーメッセージを`loadingState`に格納
+    /// 読み込み成功時は全バス停を`filteredData`に設定
+    /// 失敗時はエラーメッセージを`loadingState`に格納
     ///
-    /// ## エラーケース
-    /// - **JSONファイルが存在しない**: バンドルにbus_stops.jsonが含まれていない
-    /// - **JSONパース失敗**: ファイル形式が不正、または`BusStop`モデルと不一致
-    /// - **アクセス権限エラー**: ファイル読み込み権限がない（稀）
-    ///
-    /// ## 副作用
-    /// - `state.loadingState`: ローディング状態が更新されます
-    /// - `state.filteredData`: 読み込まれた全バス停が設定されます
-    /// - `busStops`: 内部マスターデータが更新されます
-    ///
-    /// ## 使用例（内部用）
-    /// このメソッドは`init()`から自動的に呼び出されるため、
-    /// 通常は外部から直接呼び出す必要はありません。
-    private func loadBusStops() {
+    /// ## 使用例
+    /// ```swift
+    /// let viewModel = AddLineViewModel()
+    /// await viewModel.loadBusStops()  // Viewのinit後に呼び出し
+    /// ```
+    func loadBusStops() {
         state.loadingState.startLoading()
 
         do {
@@ -146,8 +132,6 @@ final class AddLineViewModel {
             state.loadingState.failLoading(with: "バス停データの読み込みに失敗しました")
         }
     }
-
-    // MARK: - Public Methods
 
     /// 検索クエリでバス停をフィルタリング
     ///

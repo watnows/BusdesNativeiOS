@@ -18,6 +18,8 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		8CA6BE7C2EAD18D60047D384 /* BusdesNativeiOSTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = BusdesNativeiOSTests; sourceTree = "<group>"; };
+		8CA6BE7F2EAD18D60047D384 /* BusdesNativeiOSUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = BusdesNativeiOSUITests; sourceTree = "<group>"; };
 		8CF03AD02E77E03E0050E6C0 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = App; sourceTree = "<group>"; };
 		BF2712312DC1E9CF00972F13 /* Application */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Application; sourceTree = "<group>"; };
 		BF2712332DC1EA1100972F13 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
@@ -62,6 +64,8 @@
 		390FF4D32AEAC2B7FB3235DC = {
 			isa = PBXGroup;
 			children = (
+				8CA6BE7C2EAD18D60047D384 /* BusdesNativeiOSTests */,
+				8CA6BE7F2EAD18D60047D384 /* BusdesNativeiOSUITests */,
 				1E0FFD14EB8DF9D15FFBDDBD /* BusdesNativeiOS */,
 				BFD14A1B3CFBC1D1E63C2807 /* Products */,
 			);

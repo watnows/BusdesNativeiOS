@@ -9,8 +9,9 @@
       "Bash(gh pr create:*)",
       "Bash(git checkout:*)",
       "Bash(git pull:*)",
-      "Bash(git stash:*)"
-      "Bash(git push:*)"
+      "Bash(git stash:*)",
+      "mcp__serena__list_dir",
+      "mcp__serena__find_symbol"
     ],
     "deny": [],
     "ask": []

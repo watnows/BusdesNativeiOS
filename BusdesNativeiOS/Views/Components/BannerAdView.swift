@@ -12,7 +12,13 @@ struct BannerAdView: UIViewRepresentable {
     func makeUIView(context: Context) -> BannerView {
         let bannerView = BannerView(adSize: AdSizeBanner)
         bannerView.adUnitID = adUnitID
-        bannerView.rootViewController = UIApplication.shared.windows.first?.rootViewController
+
+        // iOS 15+対応: UIWindowSceneを使用してrootViewControllerを取得
+        bannerView.rootViewController = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows
+            .first?.rootViewController
+
         bannerView.load(Request())
         return bannerView
     }

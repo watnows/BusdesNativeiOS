@@ -5,13 +5,23 @@ struct HomeCardView: View {
     let viewModel: HomeViewModel
     let routeEntity: Route
     @State private var selectedInfo = 0
+    @Environment(\.modelContext) private var modelContext
 
     private var routeID: UUID { routeEntity.id }
     private var busInfos: [NextBus] { viewModel.timeTables[routeID] ?? [] }
     private var countdownString: String { viewModel.countdowns[routeID] ?? "--:--:--" }
     private var errorMessage: NetworkError? { viewModel.errorMessages[routeID] ?? nil }
-    
+
     var body: some View {
+        ZStack(alignment: .topTrailing) {
+            cardContent
+
+            // お気に入りスターアイコン
+            favoriteButton
+        }
+    }
+
+    private var cardContent: some View {
         VStack(spacing: 10) {
             HStack {
                 Text(routeEntity.from)
@@ -33,6 +43,8 @@ struct HomeCardView: View {
                     .accessibilityLabel("目的地: \(routeEntity.to)")
             }
             .padding(.horizontal, 20)
+            .padding(.vertical, 5)
+            .padding(.trailing, 40)// スターアイコンのスペースを確保
             .accessibilityElement(children: .combine)
             CustomDottedLine()
                 .stroke(style: .init(dash: [4,3]))
@@ -210,6 +222,41 @@ struct HomeCardView: View {
     
     private func shouldShowWarningIcon(for route: Route) -> Bool {
         return false
+    }
+
+    // MARK: - お気に入りボタン
+
+    private var favoriteButton: some View {
+        Button {
+            toggleFavorite()
+        } label: {
+            Image(systemName: routeEntity.isFavorite ? "star.fill" : "star")
+                .foregroundColor(routeEntity.isFavorite ? .yellow : .gray.opacity(0.5))
+                .font(.title3)
+                .padding(12)
+                .background(Color.white.opacity(0.9))
+                .clipShape(Circle())
+        }
+        .padding(8)
+        .accessibilityLabel(routeEntity.isFavorite ? "お気に入りを解除" : "お気に入りに登録")
+        .accessibilityHint("タップしてお気に入り状態を切り替えます")
+    }
+
+    private func toggleFavorite() {
+        routeEntity.isFavorite.toggle()
+
+        if routeEntity.isFavorite {
+            routeEntity.favoritedAt = Date()
+        } else {
+            routeEntity.favoritedAt = nil
+        }
+
+        do {
+            try modelContext.save()
+        } catch {
+            // エラーハンドリング: ログ出力
+            print("お気に入り保存エラー: \(error)")
+        }
     }
 }
 

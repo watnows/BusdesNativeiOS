@@ -141,14 +141,14 @@ final class AdService {
         let bannerView = BannerView(adSize: AdSizeBanner)
         bannerView.adUnitID = bannerAdUnitID
 
-        // iOS 15+対応: UIWindowSceneベースでrootViewControllerを取得
-        if let rootViewController = getRootViewController() {
-            bannerView.rootViewController = rootViewController
-            bannerView.load(Request())
-        } else {
-            logger.warning("rootViewControllerの取得に失敗。広告を読み込めません。")
-        }
 
+        // iOS 15+対応: UIWindowSceneを使用してrootViewControllerを取得
+        bannerView.rootViewController = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows
+            .first?.rootViewController
+
+        bannerView.load(Request())
         return bannerView
     }
 

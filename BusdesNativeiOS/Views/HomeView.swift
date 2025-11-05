@@ -5,8 +5,8 @@ import os.log
 struct HomeView: View {
     @Binding var path: NavigationPath
 
-    // SwiftDataから直接クエリ（自動UI更新、新しい順）
-    @Query(sort: \Route.createdAt, order: .reverse) private var savedRoutes: [Route]
+    // SwiftDataから直接クエリ（自動UI更新）
+    @Query private var savedRoutes: [Route]
 
     // ViewModelはリアルタイムバス情報のみ管理
     @State private var viewModel = HomeViewModel()
@@ -19,6 +19,19 @@ struct HomeView: View {
 
     private let appBarHeight: CGFloat = UIScreen.main.bounds.height * 0.35
 
+    // お気に入り優先でソート済みのルート一覧
+    private var sortedRoutes: [Route] {
+        let favorites = savedRoutes
+            .filter { $0.isFavorite }
+            .sorted { ($0.favoritedAt ?? .distantPast) < ($1.favoritedAt ?? .distantPast) }
+
+        let normals = savedRoutes
+            .filter { !$0.isFavorite }
+            .sorted { $0.createdAt > $1.createdAt }
+
+        return favorites + normals
+    }
+
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack(spacing: 0) {
@@ -26,7 +39,7 @@ struct HomeView: View {
                     EmptyRouteView()
                 } else {
                     RouteListView(
-                        routes: savedRoutes,
+                        routes: sortedRoutes,  // ソート済みリストを渡す
                         viewModel: viewModel,
                         onDelete: deleteRoute
                     )

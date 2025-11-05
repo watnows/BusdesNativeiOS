@@ -1,4 +1,4 @@
-import SwiftUICore
+import SwiftUI
 
 struct CurvedRedBackground: Shape {
     var height: CGFloat
